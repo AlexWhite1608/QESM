@@ -1,9 +1,6 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Client {
@@ -11,6 +8,7 @@ public class Client {
     private int arrivalTime;
     private int taskSize;
     private int queueTime;
+    int x, y;
     private NodoFog assignedNodo;
     private Map<NodoFog, Integer> preferenceList; // Nodo -> Punteggio di preferenza
 
@@ -21,6 +19,9 @@ public class Client {
         this.arrivalTime = arrivalTime;
         this.taskSize = taskSize;
         this.queueTime = 0;
+        Random random = new Random();
+        this.x = random.nextInt(100);
+        this.y = random.nextInt(100);
         this.assignedNodo = null;
         this.preferenceList = new HashMap<>();
     }
@@ -28,7 +29,7 @@ public class Client {
     // Genera una lista di preferenza dei client verso i nodi
     public void calculatePreferenceList(List<NodoFog> nodi) {
         for (NodoFog nodo : nodi) {
-            int preferenceScore = nodo.getCurrentLoad() + nodo.getDistance();   // tempo di coda (load) + tempo di raggiungimento (distance)
+            int preferenceScore = nodo.getCurrentLoad() + (int) calculateDistanceTo(nodo);   // tempo di coda (load) + tempo di raggiungimento (distance)
             preferenceList.put(nodo, preferenceScore);
         }
     }
@@ -42,6 +43,11 @@ public class Client {
             sortedNodi.add(entry.getKey());
         }
         return sortedNodi;
+    }
+
+    // Calcola la distanza euclidea con il nodo specificato
+    public double calculateDistanceTo(NodoFog node) {
+        return Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
     }
 
     public int getId() {
@@ -70,6 +76,14 @@ public class Client {
 
     public void setAssignedNodo(NodoFog nodo) {
         this.assignedNodo = nodo;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override

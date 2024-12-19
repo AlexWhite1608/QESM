@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="implementazione Nodo+Client e test delle PreferenceList">
-      <change afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/core/GaleShapleyMatchingTest.java" afterDir="false" />
+    <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="prima implementazione algoritmo matching + test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +108,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734623150753</updated>
-      <workItem from="1734623151850" duration="4138000" />
+      <workItem from="1734623151850" duration="4768000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -118,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734624817407</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="prima implementazione algoritmo matching + test">
+      <option name="closed" value="true" />
+      <created>1734627471291</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734627471291</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -127,6 +135,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="implementazione Nodo+Client e test delle PreferenceList" />
-    <option name="LAST_COMMIT_MESSAGE" value="implementazione Nodo+Client e test delle PreferenceList" />
+    <MESSAGE value="prima implementazione algoritmo matching + test" />
+    <option name="LAST_COMMIT_MESSAGE" value="prima implementazione algoritmo matching + test" />
   </component>
 </project>

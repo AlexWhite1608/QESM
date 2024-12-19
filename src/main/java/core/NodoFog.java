@@ -1,17 +1,15 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class NodoFog {
     private int id;
     private int capacity; // Capacità computazionale del nodo
     private int currentLoad; // Carico attuale sul nodo (tempo di coda)
     private int executionTime; // Tempo stimato di esecuzione per un task
-    private int distance; // Distanza con i client (simula la latenza)
+    int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
@@ -21,14 +19,16 @@ public class NodoFog {
         this.capacity = capacity;
         this.currentLoad = 0;
         this.executionTime = executionTime;
-        this.distance = distance;
+        Random random = new Random();
+        this.x = random.nextInt(100);
+        this.y = random.nextInt(100);
         this.preferenceList = new HashMap<>();
     }
 
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = client.getQueueTime() + client.getTaskSize() + this.distance; // tempo di coda + esecuzione che dipende da quanti task + distanza
+            int preferenceScore = client.getQueueTime() + client.getTaskSize() + (int) calculateDistanceTo(client); // tempo di coda + esecuzione che dipende da quanti task + distanza
             preferenceList.put(client, preferenceScore);
         }
     }
@@ -42,6 +42,11 @@ public class NodoFog {
             sortedClients.add(entry.getKey());
         }
         return sortedClients;
+    }
+
+    // Calcola la distanza euclidea con il client specificato
+    public double calculateDistanceTo(Client client) {
+        return Math.sqrt(Math.pow(this.x - client.getX(), 2) + Math.pow(this.y - client.getY(), 2));
     }
 
     public int getId() {
@@ -64,8 +69,12 @@ public class NodoFog {
         return executionTime;
     }
 
-    public int getDistance() {
-        return distance;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override
@@ -74,7 +83,8 @@ public class NodoFog {
                 ", capacity=" + capacity +
                 ", currentLoad=" + currentLoad +
                 ", executionTime=" + executionTime +
-                ", distance=" + distance +
+                ", x=" + x +
+                ", y=" + y +
                 '}';
     }
 }
