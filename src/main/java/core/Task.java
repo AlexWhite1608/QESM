@@ -12,6 +12,13 @@ public class Task {
         this.requiredTime = random.nextInt(5) + 1; // tempo di esecuzione variabile per ogni task (1-5)
     }
 
+    //TODO: usato solo per i test
+    public Task(Client client, int requiredTime) {
+        this.client = client;
+        this.requiredTime = requiredTime; // Valore deterministico
+    }
+
+
     public Client getClient() {
         return client;
     }

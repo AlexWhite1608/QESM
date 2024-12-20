@@ -60,6 +60,13 @@ public class Client {
         }
     }
 
+    //TODO: elimina, usato solo per i test
+    public void generateTasksForTest(List<Task> predefinedTasks) {
+        this.taskList.clear();
+        this.taskList.addAll(predefinedTasks);
+    }
+
+
     // Ritorna il tempo totale necessario per completare tutti i task
     public int getTotalTaskExecutionTime() {
         return taskList.stream().mapToInt(Task::getRequiredTime).sum();
