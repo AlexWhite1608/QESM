@@ -45,12 +45,13 @@ public class GaleShapleyMatching {
                 // Registra la proposta
                 clientProposals.get(client).add(nodo);
 
-                // Se il nodo è libero, accetta la proposta
-                if (!engagedPairs.containsValue(nodo)) {
+                // Se il nodo ha capacità disponibile, accetta la proposta
+                if (nodo.getCurrentLoad() < nodo.getCapacity()) {
                     engagedPairs.put(client, nodo);
+                    nodo.setCurrentLoad(nodo.getCurrentLoad() + 1); // Incrementa il carico del nodo
                     break; // Il client è ora accoppiato
                 } else {
-                    // Nodo già accoppiato, controlla se preferisce il nuovo client
+                    // Nodo già alla capacità massima, controlla se preferisce il nuovo client
                     Client currentClient = getClientEngagedWith(engagedPairs, nodo);
                     List<Client> nodoPrefList = nodo.getPreferenceList();
 
@@ -59,14 +60,15 @@ public class GaleShapleyMatching {
                         engagedPairs.remove(currentClient);
                         freeClients.add(currentClient); // Rendi il precedente client libero
                         engagedPairs.put(client, nodo);
+                        nodo.setCurrentLoad(nodo.getCurrentLoad() + 1); // Incrementa il carico del nodo
                         break; // Il nuovo client è ora accoppiato
                     }
                 }
             }
 
-            // Se il client non è riuscito a trovare un nodo, resta nella coda
+            // Se il client non è riuscito a trovare un nodo, resta non assegnato
             if (!engagedPairs.containsKey(client)) {
-                freeClients.add(client);
+                System.out.println("Client " + client.getId() + " non assegnato in questo time slot.");
             }
         }
 

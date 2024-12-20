@@ -23,9 +23,13 @@ public class Simulation {
      * Simula uno step temporale nella simulazione.
      */
     public void simulateTimeStep() {
-        // Aggiorna lo stato dei nodi (riduce il tempo di esecuzione e rimuove task completati)
+
+        // Esegui il matching per riassegnare i client
+        Map<Client, NodoFog> matching = GaleShapleyMatching.match(clients, nodi);
+
+        // Processa i task nei nodi
         for (NodoFog nodo : nodi) {
-            updateNodeLoad(nodo);
+            nodo.processTasks();
         }
 
         // Aggiorna il tempo di coda per i client non serviti
@@ -35,48 +39,16 @@ public class Simulation {
             }
         }
 
-        // Esegui il matching per riassegnare i client non assegnati
-        Map<Client, NodoFog> matching = GaleShapleyMatching.match(clients, nodi);
-
-        // Applica il matching e aggiorna i carichi
+        // Aggiungi i task generati dai client assegnati
         for (Map.Entry<Client, NodoFog> entry : matching.entrySet()) {
             Client client = entry.getKey();
             NodoFog nodo = entry.getValue();
-            if (nodo.getCurrentLoad() < nodo.getCapacity()) { // Assegna solo se il nodo ha capacità disponibile
-                assignClientToNode(client, nodo);
+            if (nodo.getCurrentLoad() < nodo.getCapacity()) { // Assegna solo se c'è capacità
+                int tasks = client.generateTasks();
+                nodo.addTasks(client, tasks);
+                client.setAssignedNodo(nodo);
             }
         }
-    }
-
-    /**
-     * Aggiorna il carico del nodo riducendo il tempo di esecuzione e rimuovendo i task completati.
-     */
-    private void updateNodeLoad(NodoFog nodo) {
-        if (nodo.getExecutionTime() > 0) {
-            nodo.setExecutionTime(nodo.getExecutionTime() - 1); // Riduce il tempo di esecuzione
-        }
-        if (nodo.getExecutionTime() <= 0 && nodo.getCurrentLoad() > 0) {
-            nodo.setCurrentLoad(nodo.getCurrentLoad() - 1); // Rimuove un task completato
-        }
-    }
-
-    /**
-     * Calcola il tempo di esecuzione per un task di un client.
-     */
-    public int calculateExecutionTime(Client client) {
-        int baseTime = client.getTaskSize();
-        int variability = (int) (baseTime * 0.2);
-        return baseTime + random.nextInt(2 * variability + 1) - variability;
-    }
-
-    /**
-     * Assegna un client a un nodo, aggiornando il carico e il tempo di esecuzione.
-     */
-    public void assignClientToNode(Client client, NodoFog nodo) {
-        client.setAssignedNodo(nodo);
-        int executionTime = calculateExecutionTime(client);
-        nodo.setCurrentLoad(nodo.getCurrentLoad() + 1);
-        nodo.setExecutionTime(nodo.getExecutionTime() + executionTime);
     }
 
     /**
@@ -101,10 +73,10 @@ public class Simulation {
         }
         System.out.println("NodoFog State:");
         for (NodoFog nodo : nodi) {
-            System.out.println("  NodoFog " + nodo.getId() + " -> CurrentLoad: " + nodo.getCurrentLoad() +
-                    ", ExecutionTime: " + nodo.getExecutionTime());
+            System.out.println("  NodoFog " + nodo.getId() + " -> CurrentLoad: " + nodo.getCurrentLoad());
         }
         System.out.println();
     }
 }
+
 

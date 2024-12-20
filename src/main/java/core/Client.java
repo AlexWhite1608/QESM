@@ -5,8 +5,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Client {
     private int id;
-    private int arrivalTime;
-    private int taskSize;
+    private Integer arrivalTime; // time slot di arrivo
+    private Integer departureTime; // time slot di uscita
+    private int meanTaskSize;   // valor medio del numero di task generati
     private int queueTime;
     int x, y;
     private NodoFog assignedNodo;
@@ -14,10 +15,11 @@ public class Client {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public Client(int arrivalTime, int taskSize) {
+    public Client(int arrivalTime, int meanTaskSize) {
         this.id = idGenerator.getAndIncrement();
         this.arrivalTime = arrivalTime;
-        this.taskSize = taskSize;
+        this.departureTime = null;
+        this.meanTaskSize = meanTaskSize;
         this.queueTime = 0;
         Random random = new Random();
         this.x = random.nextInt(100);
@@ -45,6 +47,12 @@ public class Client {
         return sortedNodi;
     }
 
+    // Genera un numero di task in base alla distribuzione normale con media meanTaskSize
+    public int generateTasks() {
+        Random random = new Random();
+        return (int) Math.max(1, random.nextGaussian() * 2 + meanTaskSize);
+    }
+
     // Calcola la distanza euclidea con il nodo specificato
     public double calculateDistanceTo(NodoFog node) {
         return Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
@@ -58,12 +66,16 @@ public class Client {
         return id;
     }
 
-    public int getArrivalTime() {
+    public Integer getArrivalTime() {
         return arrivalTime;
     }
 
-    public int getTaskSize() {
-        return taskSize;
+    public Integer getDepartureTime() {
+        return departureTime;
+    }
+
+    public int getMeanTaskSize() {
+        return meanTaskSize;
     }
 
     public int getQueueTime() {
@@ -94,7 +106,7 @@ public class Client {
     public String toString() {
         return "Client{id=" + id +
                 ", arrivalTime=" + arrivalTime +
-                ", taskSize=" + taskSize +
+                ", taskSize=" + meanTaskSize +
                 ", queueTime=" + queueTime +
                 ", assignedNodo=" + (assignedNodo != null ? assignedNodo.getId() : "None") +
                 '}';
