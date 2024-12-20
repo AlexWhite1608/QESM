@@ -50,6 +50,10 @@ public class Client {
         return Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
     }
 
+    public void incrementQueueTime() {
+        this.queueTime++;
+    }
+
     public int getId() {
         return id;
     }

@@ -14,11 +14,11 @@ public class NodoFog {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public NodoFog(int capacity, int executionTime, int distance) {
+    public NodoFog(int capacity) {
         this.id = idGenerator.getAndIncrement();
         this.capacity = capacity;
         this.currentLoad = 0;
-        this.executionTime = executionTime;
+        this.executionTime = 0;
         Random random = new Random();
         this.x = random.nextInt(100);
         this.y = random.nextInt(100);
@@ -28,7 +28,7 @@ public class NodoFog {
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = client.getQueueTime() + client.getTaskSize() + (int) calculateDistanceTo(client); // tempo di coda + esecuzione che dipende da quanti task + distanza
+            int preferenceScore = client.getQueueTime() + this.executionTime + (int) calculateDistanceTo(client); // tempo di coda + esecuzione che dipende da quanti task + distanza
             preferenceList.put(client, preferenceScore);
         }
     }
@@ -75,6 +75,10 @@ public class NodoFog {
 
     public int getY() {
         return y;
+    }
+
+    public void setExecutionTime(int executionTime) {
+        this.executionTime = executionTime;
     }
 
     @Override
