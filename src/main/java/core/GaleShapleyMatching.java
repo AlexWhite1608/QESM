@@ -9,10 +9,8 @@ public class GaleShapleyMatching {
      *
      * @param clients Lista dei client che richiedono l'esecuzione di task.
      * @param nodi    Lista dei nodi fog che offrono capacità computazionale.
-     * @return Una mappa {@code Map<Client, NodoFog>} che associa ciascun client al nodo fog selezionato
-     *         nel matching stabile.
      */
-    public static Map<Client, NodoFog> match(List<Client> clients, List<NodoFog> nodi) {
+    public static void match(List<Client> clients, List<NodoFog> nodi) {
         for (Client client : clients) {
             client.calculatePreferenceList(nodi);
         }
@@ -45,25 +43,24 @@ public class GaleShapleyMatching {
                 // Registra la proposta
                 clientProposals.get(client).add(nodo);
 
-                // Se il nodo ha capacità disponibile, accetta la proposta
-                if (nodo.getCurrentLoad() < nodo.getCapacity()) {
-                    engagedPairs.put(client, nodo);
-                    nodo.setCurrentLoad(nodo.getCurrentLoad() + 1); // Incrementa il carico del nodo
-                    break; // Il client è ora accoppiato
-                } else {
-                    // Nodo già alla capacità massima, controlla se preferisce il nuovo client
-                    Client currentClient = getClientEngagedWith(engagedPairs, nodo);
-                    List<Client> nodoPrefList = nodo.getPreferenceList();
+                // Aggiungi il client alla coda del nodo
+                nodo.getClientsQueue().add(client);
+                client.setAssignedNodo(nodo);
 
-                    if (nodoPrefList.indexOf(client) < nodoPrefList.indexOf(currentClient)) {
-                        // Nodo preferisce il nuovo client: rimuovi il precedente
-                        engagedPairs.remove(currentClient);
-                        freeClients.add(currentClient); // Rendi il precedente client libero
-                        engagedPairs.put(client, nodo);
-                        nodo.setCurrentLoad(nodo.getCurrentLoad() + 1); // Incrementa il carico del nodo
-                        break; // Il nuovo client è ora accoppiato
-                    }
-                }
+                // Ordina la coda in base alla lista di preferenza del nodo
+                List<Client> sortedClients = new ArrayList<>(nodo.getClientsQueue());
+                sortedClients.sort((c1, c2) -> {
+                    List<Client> nodoPrefList = nodo.getPreferenceList();
+                    return Integer.compare(nodoPrefList.indexOf(c1), nodoPrefList.indexOf(c2));
+                });
+
+                // Aggiorna la coda del nodo con l'ordine corretto
+                nodo.getClientsQueue().clear();
+                nodo.getClientsQueue().addAll(sortedClients);
+
+                // Accetta la proposta e registra il matching
+                engagedPairs.put(client, nodo);
+                break; // Il client è ora accoppiato (anche se in coda)
             }
 
             // Se il client non è riuscito a trovare un nodo, resta non assegnato
@@ -72,15 +69,5 @@ public class GaleShapleyMatching {
             }
         }
 
-        return engagedPairs;
-    }
-
-    private static Client getClientEngagedWith(Map<Client, NodoFog> engagedPairs, NodoFog nodo) {
-        return engagedPairs.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().equals(nodo))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElse(null);
     }
 }

@@ -8,10 +8,11 @@ public class Client {
     private Integer arrivalTime; // time slot di arrivo
     private Integer departureTime; // time slot di uscita
     private int meanTaskSize;   // valor medio del numero di task generati
-    private int queueTime;
+    private int queueTime;  // tempo trascorso in coda
     int x, y;
     private NodoFog assignedNodo;
     private Map<NodoFog, Integer> preferenceList; // Nodo -> Punteggio di preferenza
+    private List<Task> taskList = new ArrayList<>(); // Lista dei task
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
@@ -31,7 +32,7 @@ public class Client {
     // Genera una lista di preferenza dei client verso i nodi
     public void calculatePreferenceList(List<NodoFog> nodi) {
         for (NodoFog nodo : nodi) {
-            int preferenceScore = nodo.getCurrentLoad() + (int) calculateDistanceTo(nodo);   // tempo di coda (load) + tempo di raggiungimento (distance)
+            int preferenceScore = nodo.getTotalDelayTime() + (int) calculateDistanceTo(nodo);   // tempo di ritardo totale accumulato + tempo di raggiungimento (distance)
             preferenceList.put(nodo, preferenceScore);
         }
     }
@@ -48,9 +49,20 @@ public class Client {
     }
 
     // Genera un numero di task in base alla distribuzione normale con media meanTaskSize
-    public int generateTasks() {
+    public void generateTasks() {
         Random random = new Random();
-        return (int) Math.max(1, random.nextGaussian() * 2 + meanTaskSize);
+        int numGeneratedTasks = (int) Math.max(1, random.nextGaussian() * 2 + meanTaskSize);
+
+        // Genero i task e li metto nella lista
+        for (int i = 0; i<numGeneratedTasks; i++) {
+            Task task = new Task(this);
+            taskList.add(task);
+        }
+    }
+
+    // Ritorna il tempo totale necessario per completare tutti i task
+    public int getTotalTaskExecutionTime() {
+        return taskList.stream().mapToInt(Task::getRequiredTime).sum();
     }
 
     // Calcola la distanza euclidea con il nodo specificato
@@ -58,8 +70,8 @@ public class Client {
         return Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
     }
 
-    public void incrementQueueTime() {
-        this.queueTime++;
+    public void incrementQueueTime(int increment) {
+        queueTime += increment;
     }
 
     public int getId() {
@@ -102,11 +114,15 @@ public class Client {
         return y;
     }
 
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
     @Override
     public String toString() {
         return "Client{id=" + id +
                 ", arrivalTime=" + arrivalTime +
-                ", taskSize=" + meanTaskSize +
+                ", taskListSize=" + taskList.size() +
                 ", queueTime=" + queueTime +
                 ", assignedNodo=" + (assignedNodo != null ? assignedNodo.getId() : "None") +
                 '}';

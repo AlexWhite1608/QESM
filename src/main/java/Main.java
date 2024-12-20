@@ -23,7 +23,7 @@ public class Main {
         List<Client> clients = clientFactory.generateClients(NUM_CLIENTS);
 
         // Simulazione
-        Simulation simulation = new Simulation(clients, nodi);
+        Simulation simulation = new Simulation(clients, nodi, 20);
         simulation.runSimulation(10);
     }
 }

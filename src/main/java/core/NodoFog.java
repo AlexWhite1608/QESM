@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class NodoFog {
     private int id;
-    private int capacity; // Capacità computazionale del nodo
-    private int currentLoad; // Carico attuale sul nodo (tempo di coda)
-    private int executionTime; // Tempo stimato di esecuzione per un task
+    private int computationCapability;  //TODO: Potenza di calcolo del nodo (fai da 1 a 5)
+    private int totalExecutionTime; // Tempo totale di esecuzione accumulato eseguendo i vari task
+    private int totalDelayTime; // Tempo totale di ritardo accumulato (quando l'esecuzione dei task ha sforato il time slot
     int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
     private Queue<Task> taskQueue; // Coda dei task
@@ -16,11 +16,11 @@ public class NodoFog {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public NodoFog(int capacity) {
+    public NodoFog(int computationCapability) {
         this.id = idGenerator.getAndIncrement();
-        this.capacity = capacity;
-        this.currentLoad = 0;
-        this.executionTime = 0;
+        this.computationCapability = computationCapability;
+        this.totalExecutionTime = 0;
+        this.totalDelayTime = 0;
         Random random = new Random();
         this.taskQueue = new LinkedList<>();
         this.clientsQueue = new LinkedList<>();
@@ -32,11 +32,10 @@ public class NodoFog {
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = client.getQueueTime() + client.getMeanTaskSize() + (int) calculateDistanceTo(client);
+            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  // preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
             preferenceList.put(client, preferenceScore);
         }
     }
-
 
     // Restituisce la lista di preferenza ordinata
     public List<Client> getPreferenceList() {
@@ -49,62 +48,52 @@ public class NodoFog {
         return sortedClients;
     }
 
-    /**
-     * Aggiunge i task generati da un client alla coda del nodo.
-     */
-    public void addTasks(Client client, int taskCount) {
-        Random random = new Random();
-        for (int i = 0; i < taskCount; i++) {
-            int executionTime = random.nextInt(3) + 1; // Tempo di esecuzione variabile per ogni task (1-3)
-            taskQueue.offer(new Task(client, executionTime));
-            currentLoad++;
-        }
-    }
-
-    /**
-     * Processa i task in coda in base alla capacità del nodo.
-     * Riduce il tempo di attesa (queueTime) dei client associati.
-     */
-    public void processTasks() {
-        int processedTasks = 0;
-
-        while (!taskQueue.isEmpty() && processedTasks < capacity) {
-            Task task = taskQueue.peek();
-
-            if (task.getRemainingTime() > 1) {
-                task.decrementRemainingTime();
-            } else {
-                taskQueue.poll(); // Task completato, rimuovilo dalla coda
-                task.getClient().setQueueTime(Math.max(0, task.getClient().getQueueTime() - 1));
-                currentLoad--;
-            }
-            processedTasks++;
-        }
-    }
-
     // Calcola la distanza euclidea con il client specificato
     public double calculateDistanceTo(Client client) {
         return Math.sqrt(Math.pow(this.x - client.getX(), 2) + Math.pow(this.y - client.getY(), 2));
     }
 
+    // Processa i task nella coda
+    public void processTasks(int timeSlotDuration) {
+        int timeLeft = timeSlotDuration;
+
+        while (!clientsQueue.isEmpty() && timeLeft > 0) {
+            Client currentClient = clientsQueue.poll();
+            List<Task> clientTasks = currentClient.getTaskList();
+
+            // Calcola il tempo totale richiesto per eseguire tutti i task del client
+            int clientTotalTime = clientTasks.stream().mapToInt(Task::getRequiredTime).sum();
+
+            // Riduci il tempo richiesto in base alla capacità di calcolo del nodo
+            int adjustedExecutionTime = (int) Math.ceil(clientTotalTime / (double) computationCapability);
+
+            if (adjustedExecutionTime <= timeLeft) {
+                // Il task set del client è completato entro il time slot
+                totalExecutionTime += adjustedExecutionTime;
+                timeLeft -= adjustedExecutionTime;
+
+                taskQueue.removeAll(clientTasks);
+            } else {
+                // Il task set del client richiede più tempo del time slot
+                totalExecutionTime += adjustedExecutionTime;
+                totalDelayTime += adjustedExecutionTime - timeLeft; // Aggiungi il ritardo
+                timeLeft = 0;
+
+                taskQueue.removeAll(clientTasks);
+
+                break; // Il time slot è esaurito, termina l'elaborazione
+            }
+
+            // Aggiorna il tempo di coda per i client rimanenti nella coda
+            for (Client remainingClient : clientsQueue) {
+                remainingClient.incrementQueueTime(adjustedExecutionTime);
+            }
+        }
+    }
+
+
     public int getId() {
         return id;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public int getCurrentLoad() {
-        return currentLoad;
-    }
-
-    public void setCurrentLoad(int currentLoad) {
-        this.currentLoad = currentLoad;
-    }
-
-    public int getExecutionTime() {
-        return executionTime;
     }
 
     public int getX() {
@@ -115,16 +104,32 @@ public class NodoFog {
         return y;
     }
 
-    public void setExecutionTime(int executionTime) {
-        this.executionTime = executionTime;
+    public int getComputationCapability() {
+        return computationCapability;
+    }
+
+    public int getTotalExecutionTime() {
+        return totalExecutionTime;
+    }
+
+    public int getTotalDelayTime() {
+        return totalDelayTime;
+    }
+
+    public Queue<Task> getTaskQueue() {
+        return taskQueue;
+    }
+
+    public Queue<Client> getClientsQueue() {
+        return clientsQueue;
     }
 
     @Override
     public String toString() {
         return "NodoFog{id=" + id +
-                ", capacity=" + capacity +
-                ", currentLoad=" + currentLoad +
-                ", executionTime=" + executionTime +
+                ", computationCapability=" + computationCapability +
+                ", totalExecutionTime=" + totalExecutionTime +
+                ", totalDelayTime=" + totalDelayTime +
                 ", x=" + x +
                 ", y=" + y +
                 '}';

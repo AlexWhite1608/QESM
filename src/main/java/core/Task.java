@@ -1,31 +1,23 @@
 package core;
 
+import java.util.Random;
+
 public class Task {
     private Client client;
-    private int remainingTime;
+    private int requiredTime;   // tempo richiesto per completare il task
+    Random random = new Random();
 
-    public Task(Client client, int remainingTime) {
+    public Task(Client client) {
         this.client = client;
-        this.remainingTime = remainingTime;
+        this.requiredTime = random.nextInt(5) + 1; // tempo di esecuzione variabile per ogni task (1-5)
     }
 
     public Client getClient() {
         return client;
     }
 
-    public int getRemainingTime() {
-        return remainingTime;
-    }
-
-    public void decrementRemainingTime() {
-        this.remainingTime--;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{client=" + client.getId() +
-                ", remainingTime=" + remainingTime +
-                '}';
+    public int getRequiredTime() {
+        return requiredTime;
     }
 }
 

@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
-      <change afterPath="$PROJECT_DIR$/src/main/java/core/Task.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/simulation/ClientFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/simulation/NodoFogFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Task.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,11 +46,12 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "sim",
+    "git-widget-placeholder": "new__version",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -79,7 +78,7 @@
       <option name="presentableId" value="Default" />
       <updated>1734623150753</updated>
       <workItem from="1734623151850" duration="6638000" />
-      <workItem from="1734684115053" duration="5381000" />
+      <workItem from="1734684115053" duration="14903000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -117,5 +116,9 @@
     <MESSAGE value="prima implementazione algoritmo matching + test" />
     <MESSAGE value="introdotte coordinate x,y" />
     <option name="LAST_COMMIT_MESSAGE" value="introdotte coordinate x,y" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
