@@ -66,7 +66,6 @@ public class Client {
         this.taskList.addAll(predefinedTasks);
     }
 
-
     // Ritorna il tempo totale necessario per completare tutti i task
     public int getTotalTaskExecutionTime() {
         return taskList.stream().mapToInt(Task::getRequiredTime).sum();

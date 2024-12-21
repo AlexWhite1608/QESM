@@ -6,9 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class NodoFog {
     private int id;
-    private int computationCapability;  //TODO: Potenza di calcolo del nodo (fai da 1 a 5)
+    private int computationCapability;  // Potenza di calcolo del nodo
     private int totalExecutionTime; // Tempo totale di esecuzione accumulato eseguendo i vari task
     private int totalDelayTime; // Tempo totale di ritardo accumulato (quando l'esecuzione dei task ha sforato il time slot
+    private int maxQueueSize; // Dimensione massima della coda
     int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
     private Queue<Task> taskQueue; // Coda dei task
@@ -16,9 +17,10 @@ public class NodoFog {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public NodoFog(int computationCapability) {
+    public NodoFog(int computationCapability, int maxQueueSize) {
         this.id = idGenerator.getAndIncrement();
         this.computationCapability = computationCapability;
+        this.maxQueueSize = maxQueueSize;
         this.totalExecutionTime = 0;
         this.totalDelayTime = 0;
         Random random = new Random();
@@ -32,7 +34,7 @@ public class NodoFog {
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  // preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
+            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  //FIXME preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
             preferenceList.put(client, preferenceScore);
         }
     }
@@ -91,6 +93,10 @@ public class NodoFog {
         }
     }
 
+
+    public boolean isQueueFull() {
+        return clientsQueue.size() >= maxQueueSize;
+    }
 
     public int getId() {
         return id;

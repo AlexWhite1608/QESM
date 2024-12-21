@@ -16,13 +16,14 @@ public class Simulation {
     private Random random;
     private int timeSlotDuration;
     private Map<Integer, Map<Client, NodoFog>> timeSlotMatchings;   // Tiene traccia dei matching in ogni time slot
-
+    private Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
 
     public Simulation(List<Client> clients, List<NodoFog> nodi, int timeSlotDuration) {
         this.clients = clients;
         this.nodi = nodi;
         this.timeSlotDuration = timeSlotDuration;
         this.timeSlotMatchings = new HashMap<>();
+        this.maxQueueTimePerSlot = new HashMap<>();
         this.random = new Random();
     }
 
@@ -53,6 +54,10 @@ public class Simulation {
             nodo.processTasks(timeSlotDuration);
         }
 
+        // Calcola il massimo queueTime tra tutti i client per questo time slot
+        Map<Client, Integer> maxQueueInfo = getMaxQueueInfo();
+        maxQueueTimePerSlot.put(currentTimeSlot, maxQueueInfo);
+
     }
 
     public void runSimulation(int slots) {
@@ -61,10 +66,16 @@ public class Simulation {
             simulateTimeSlot(currentTimeSlot);
             printSystemState(currentTimeSlot);
         }
+
+        SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
     }
 
     private void printSystemState(int timeSlot) {
         System.out.printf("=== Stato al time slot %d (durata %d) ===", timeSlot, timeSlotDuration);
+
+        System.out.println("\n--- Clienti/Nodi generati ---");
+        System.out.println("Numero di Clienti: " + clients.size());
+        System.out.println("Numero di Nodi Fog: " + nodi.size());
 
         // Matching
         System.out.println("\n--- Matching ---");
@@ -97,6 +108,26 @@ public class Simulation {
         }
 
         System.out.println("==========================\n");
+    }
+
+    // Restituisce il client con il tempo di attesa massimo e il suo tempo di attesa
+    private Map<Client, Integer> getMaxQueueInfo() {
+        Client maxWaitClient = null;
+        int maxQueueTime = -1;
+        for (Client c : clients) {
+            int currentQueueTime = c.getQueueTime();
+            if (currentQueueTime > maxQueueTime) {
+                maxQueueTime = currentQueueTime;
+                maxWaitClient = c;
+            }
+        }
+
+        // Ora maxWaitClient è il client con il tempo di attesa massimo e maxQueueTime è il valore
+        Map<Client, Integer> maxQueueInfo = new HashMap<>();
+        if (maxWaitClient != null) {
+            maxQueueInfo.put(maxWaitClient, maxQueueTime);
+        }
+        return maxQueueInfo;
     }
 
 }
