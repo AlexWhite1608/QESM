@@ -9,7 +9,7 @@ public class NodoFog {
     private int computationCapability;  // Potenza di calcolo del nodo
     private int totalExecutionTime; // Tempo totale di esecuzione accumulato eseguendo i vari task
     private int totalDelayTime; // Tempo totale di ritardo accumulato (quando l'esecuzione dei task ha sforato il time slot
-    private int totalClientServed; // Numero totale di client serviti
+    private int totalServices; // Numero di servizi effettuati
     //private int maxQueueSize; // Dimensione massima della coda
     int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
@@ -76,7 +76,7 @@ public class NodoFog {
                 timeLeft -= adjustedExecutionTime;
 
                 taskQueue.removeAll(clientTasks);
-                totalClientServed++;
+                totalServices++;
             } else {
                 // Il task set del client richiede più tempo del time slot
                 totalExecutionTime += adjustedExecutionTime;
@@ -84,7 +84,7 @@ public class NodoFog {
                 timeLeft = 0;
 
                 taskQueue.removeAll(clientTasks);
-                totalClientServed++;
+                totalServices++;
 
                 break; // Il time slot è esaurito, termina l'elaborazione
             }
@@ -129,8 +129,8 @@ public class NodoFog {
         return taskQueue;
     }
 
-    public int getTotalClientServed() {
-        return totalClientServed;
+    public int getTotalServices() {
+        return totalServices;
     }
 
     public Queue<Client> getClientsQueue() {

@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +77,7 @@
       <workItem from="1734623151850" duration="6638000" />
       <workItem from="1734684115053" duration="16346000" />
       <workItem from="1734773570420" duration="4873000" />
-      <workItem from="1734791892955" duration="2790000" />
+      <workItem from="1734791892955" duration="4611000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -115,6 +115,23 @@
     <MESSAGE value="prima implementazione algoritmo matching + test" />
     <MESSAGE value="introdotte coordinate x,y" />
     <option name="LAST_COMMIT_MESSAGE" value="introdotte coordinate x,y" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/core/NodoFog.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="core.NodoFog" memberName="totalDelayTime" />
+        <PinnedItemInfo parentTag="core.NodoFog" memberName="totalExecutionTime" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
