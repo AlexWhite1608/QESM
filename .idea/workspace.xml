@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
-      <change afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/NodoFogFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/NodoFogFactory.java" afterDir="false" />
@@ -81,7 +77,7 @@
       <updated>1734623150753</updated>
       <workItem from="1734623151850" duration="6638000" />
       <workItem from="1734684115053" duration="16346000" />
-      <workItem from="1734773570420" duration="2663000" />
+      <workItem from="1734773570420" duration="4705000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />

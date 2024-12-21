@@ -9,7 +9,8 @@ public class NodoFog {
     private int computationCapability;  // Potenza di calcolo del nodo
     private int totalExecutionTime; // Tempo totale di esecuzione accumulato eseguendo i vari task
     private int totalDelayTime; // Tempo totale di ritardo accumulato (quando l'esecuzione dei task ha sforato il time slot
-    private int maxQueueSize; // Dimensione massima della coda
+    private int totalClientServed; // Numero totale di client serviti
+    //private int maxQueueSize; // Dimensione massima della coda
     int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
     private Queue<Task> taskQueue; // Coda dei task
@@ -17,10 +18,10 @@ public class NodoFog {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public NodoFog(int computationCapability, int maxQueueSize) {
+    public NodoFog(int computationCapability) {
         this.id = idGenerator.getAndIncrement();
         this.computationCapability = computationCapability;
-        this.maxQueueSize = maxQueueSize;
+        //this.maxQueueSize = maxQueueSize;
         this.totalExecutionTime = 0;
         this.totalDelayTime = 0;
         Random random = new Random();
@@ -75,6 +76,7 @@ public class NodoFog {
                 timeLeft -= adjustedExecutionTime;
 
                 taskQueue.removeAll(clientTasks);
+                totalClientServed++;
             } else {
                 // Il task set del client richiede più tempo del time slot
                 totalExecutionTime += adjustedExecutionTime;
@@ -82,6 +84,7 @@ public class NodoFog {
                 timeLeft = 0;
 
                 taskQueue.removeAll(clientTasks);
+                totalClientServed++;
 
                 break; // Il time slot è esaurito, termina l'elaborazione
             }
@@ -94,9 +97,9 @@ public class NodoFog {
     }
 
 
-    public boolean isQueueFull() {
-        return clientsQueue.size() >= maxQueueSize;
-    }
+//    public boolean isQueueFull() {
+//        return clientsQueue.size() >= maxQueueSize;
+//    }
 
     public int getId() {
         return id;
@@ -124,6 +127,10 @@ public class NodoFog {
 
     public Queue<Task> getTaskQueue() {
         return taskQueue;
+    }
+
+    public int getTotalClientServed() {
+        return totalClientServed;
     }
 
     public Queue<Client> getClientsQueue() {

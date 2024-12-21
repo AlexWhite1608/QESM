@@ -23,7 +23,7 @@ public class NodoFogFactory {
         List<NodoFog> nodi = new ArrayList<>();
         for (int i = 0; i < numNodi; i++) {
             int capacity = random.nextInt(maxComputationCapability - minComputationalCapability + 1) + minComputationalCapability;
-            nodi.add(new NodoFog(capacity, 3));
+            nodi.add(new NodoFog(capacity));
         }
         return nodi;
     }

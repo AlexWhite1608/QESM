@@ -37,7 +37,7 @@ public class GaleShapleyMatching {
             List<NodoFog> clientPrefList = client.getPreferenceList();
 
             for (NodoFog nodo : clientPrefList) {
-                if (nodo.isQueueFull()) continue; // Salta se il nodo è pieno
+//                if (nodo.isQueueFull()) continue; // Salta se il nodo è pieno
 
                 // Salta se il client ha già proposto a questo nodo
                 if (clientProposals.get(client).contains(nodo)) continue;

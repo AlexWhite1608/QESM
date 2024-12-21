@@ -104,6 +104,7 @@ public class Simulation {
             System.out.println("NodoFog ID: " + nodo.getId() +
                     ", Capacità di Calcolo: " + nodo.getComputationCapability() +
                     ", Tempo Totale di Esecuzione: " + nodo.getTotalExecutionTime() +
+                    ", Numero totale clienti serviti: " + nodo.getTotalClientServed() +
                     ", Ritardo accumulato: " + nodo.getTotalDelayTime());
         }
 
