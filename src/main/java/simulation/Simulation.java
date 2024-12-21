@@ -17,6 +17,8 @@ public class Simulation {
     private int timeSlotDuration;
     private Map<Integer, Map<Client, NodoFog>> timeSlotMatchings;   // Tiene traccia dei matching in ogni time slot
     private Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
+    private Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
+    private Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
 
     public Simulation(List<Client> clients, List<NodoFog> nodi, int timeSlotDuration) {
         this.clients = clients;
@@ -24,6 +26,8 @@ public class Simulation {
         this.timeSlotDuration = timeSlotDuration;
         this.timeSlotMatchings = new HashMap<>();
         this.maxQueueTimePerSlot = new HashMap<>();
+        this.computationCapacityPerSlot = new HashMap<>();
+        this.delayPerSlot = new HashMap<>();
         this.random = new Random();
     }
 
@@ -58,6 +62,16 @@ public class Simulation {
         Map<Client, Integer> maxQueueInfo = getMaxQueueInfo();
         maxQueueTimePerSlot.put(currentTimeSlot, maxQueueInfo);
 
+        // Salva i dati sulla capacità computazionale e il ritardo accumulato
+        Map<NodoFog, Integer> computationCapacityMap = new HashMap<>();
+        Map<NodoFog, Integer> delayMap = new HashMap<>();
+        for (NodoFog nodo : nodi) {
+            computationCapacityMap.put(nodo, nodo.getComputationCapability());
+            delayMap.put(nodo, nodo.getTotalDelayTime());
+        }
+        computationCapacityPerSlot.put(currentTimeSlot, computationCapacityMap);
+        delayPerSlot.put(currentTimeSlot, delayMap);
+
     }
 
     public void runSimulation(int slots) {
@@ -68,6 +82,7 @@ public class Simulation {
         }
 
         SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
+        SimulationPlot.plotComputationAndDelay(computationCapacityPerSlot, delayPerSlot);
     }
 
     private void printSystemState(int timeSlot) {
