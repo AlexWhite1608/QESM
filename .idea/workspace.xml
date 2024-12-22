@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_10.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_10.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_11.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_11.json" afterDir="false" />
@@ -25,7 +26,7 @@
       <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +101,7 @@
       <workItem from="1734773570420" duration="4873000" />
       <workItem from="1734791892955" duration="9798000" />
       <workItem from="1734804993959" duration="763000" />
-      <workItem from="1734879093822" duration="6064000" />
+      <workItem from="1734879093822" duration="7286000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -140,6 +141,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="introdotte coordinate x,y" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="core.NodoFog" memberName="totalDelayTime" />

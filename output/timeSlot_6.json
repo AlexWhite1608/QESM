@@ -1,106 +1,129 @@
 {
   "clientChanges": {
-    "departedClient": "Client 8 uscito",
-    "arrivedClient": "Client 12 -\u003e NodoFog 3"
+    "departedClient": "Client 14 uscito",
+    "arrivedClient": "Client 14 -\u003e NodoFog 5"
   },
   "clients": [
     {
       "id": 1,
-      "totalRequiredTime": 822,
-      "queueTime": 35
+      "totalRequiredTime": 491,
+      "queueTime": 24
     },
     {
       "id": 2,
-      "totalRequiredTime": 815,
-      "queueTime": 22
-    },
-    {
-      "id": 3,
-      "totalRequiredTime": 558,
-      "queueTime": 12
-    },
-    {
-      "id": 4,
-      "totalRequiredTime": 340,
-      "queueTime": 23
-    },
-    {
-      "id": 5,
-      "totalRequiredTime": 425,
+      "totalRequiredTime": 348,
       "queueTime": 6
     },
     {
+      "id": 3,
+      "totalRequiredTime": 911,
+      "queueTime": 4
+    },
+    {
+      "id": 4,
+      "totalRequiredTime": 614,
+      "queueTime": 66
+    },
+    {
+      "id": 5,
+      "totalRequiredTime": 829,
+      "queueTime": 34
+    },
+    {
+      "id": 6,
+      "totalRequiredTime": 353,
+      "queueTime": 4
+    },
+    {
       "id": 7,
-      "totalRequiredTime": 409,
-      "queueTime": 26
+      "totalRequiredTime": 544,
+      "queueTime": 27
+    },
+    {
+      "id": 8,
+      "totalRequiredTime": 829,
+      "queueTime": 20
     },
     {
       "id": 9,
-      "totalRequiredTime": 691,
-      "queueTime": 9
+      "totalRequiredTime": 403,
+      "queueTime": 15
     },
     {
       "id": 10,
-      "totalRequiredTime": 574,
-      "queueTime": 13
+      "totalRequiredTime": 425,
+      "queueTime": 31
+    },
+    {
+      "id": 11,
+      "totalRequiredTime": 261,
+      "queueTime": 25
     },
     {
       "id": 12,
-      "totalRequiredTime": 74,
+      "totalRequiredTime": 425,
+      "queueTime": 17
+    },
+    {
+      "id": 13,
+      "totalRequiredTime": 230,
       "queueTime": 8
     }
   ],
-  "totalClients": 9,
+  "totalClients": 13,
   "nodi": [
     {
-      "totalExecutionTime": 55,
-      "totalServices": 12,
+      "totalExecutionTime": 70,
+      "totalServices": 5,
       "id": 1,
-      "computationCapability": 54,
-      "totalDelay": 9
+      "computationCapability": 30,
+      "totalDelay": 40
     },
     {
-      "totalExecutionTime": 28,
-      "totalServices": 2,
+      "totalExecutionTime": 68,
+      "totalServices": 14,
       "id": 2,
-      "computationCapability": 47,
-      "totalDelay": 8
+      "computationCapability": 64,
+      "totalDelay": 14
     },
     {
       "totalExecutionTime": 80,
-      "totalServices": 12,
-      "id": 3,
-      "computationCapability": 40,
-      "totalDelay": 20
-    },
-    {
-      "totalExecutionTime": 70,
-      "totalServices": 6,
-      "id": 4,
-      "computationCapability": 44,
-      "totalDelay": 19
-    },
-    {
-      "totalExecutionTime": 113,
       "totalServices": 10,
+      "id": 3,
+      "computationCapability": 46,
+      "totalDelay": 21
+    },
+    {
+      "totalExecutionTime": 63,
+      "totalServices": 14,
+      "id": 4,
+      "computationCapability": 49,
+      "totalDelay": 13
+    },
+    {
+      "totalExecutionTime": 65,
+      "totalServices": 11,
       "id": 5,
-      "computationCapability": 32,
-      "totalDelay": 53
+      "computationCapability": 56,
+      "totalDelay": 11
     }
   ],
   "timeSlot": 6,
   "totalNodiFog": 5,
   "timeSlotDuration": 10,
   "matching": {
-    "Client 4": "NodoFog 1",
+    "Client 4": "NodoFog 3",
     "Client 3": "NodoFog 3",
-    "Client 2": "NodoFog 3",
-    "Client 1": "NodoFog 2",
-    "Client 12": "NodoFog 3",
-    "Client 10": "NodoFog 2",
-    "Client 9": "NodoFog 2",
-    "Client 8": "NodoFog 4",
-    "Client 7": "NodoFog 3",
-    "Client 5": "NodoFog 1"
+    "Client 2": "NodoFog 2",
+    "Client 1": "NodoFog 3",
+    "Client 13": "NodoFog 1",
+    "Client 12": "NodoFog 2",
+    "Client 11": "NodoFog 4",
+    "Client 10": "NodoFog 4",
+    "Client 9": "NodoFog 4",
+    "Client 8": "NodoFog 2",
+    "Client 7": "NodoFog 5",
+    "Client 6": "NodoFog 2",
+    "Client 5": "NodoFog 5"
   }
 }

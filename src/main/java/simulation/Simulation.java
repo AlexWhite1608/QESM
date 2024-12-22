@@ -51,11 +51,13 @@ public class Simulation {
             if (random.nextDouble() < Globals.ARRIVAL_DEPARTURE_PROBABILITY) {
                 handleNewClient(currentTimeSlot);
             } else {
-                handleClientExit(currentTimeSlot);
+                if(!clients.isEmpty())
+                    handleClientExit(currentTimeSlot);
             }
         }
 
-        // TODO: controllo stabilità
+        // controllo stabilità
+        GaleShapleyMatching.checkAndPerformSwaps(clients, nodi);
 
         // Salva il matching corrente
         Map<Client, NodoFog> currentMatching = new HashMap<>();

@@ -72,4 +72,49 @@ public class GaleShapleyMatching {
         }
 
     }
+
+    // Verifica se conviene fare scambi per migliorare la stabilità del matching
+    public static void checkAndPerformSwaps(List<Client> clients, List<NodoFog> nodi) {
+        for (Client client1 : clients) {
+            for (Client client2 : clients) {
+                if (client1 != client2 && client1.getAssignedNodo() != null && client2.getAssignedNodo() != null) {
+                    NodoFog nodo1 = client1.getAssignedNodo();
+                    NodoFog nodo2 = client2.getAssignedNodo();
+
+                    // Ottieni le preferenze attuali
+                    List<NodoFog> client1Preferences = client1.getPreferenceList();
+                    List<NodoFog> client2Preferences = client2.getPreferenceList();
+
+                    // Ottieni le posizioni attuali e quelle dopo l'eventuale scambio
+                    int client1CurrentPreference = client1Preferences.indexOf(nodo1);
+                    int client2CurrentPreference = client2Preferences.indexOf(nodo2);
+
+                    int client1NewPreference = client1Preferences.indexOf(nodo2);
+                    int client2NewPreference = client2Preferences.indexOf(nodo1);
+
+                    // Condizioni per il miglioramento
+                    boolean client1Improves = client1NewPreference < client1CurrentPreference;
+                    boolean client2Improves = client2NewPreference < client2CurrentPreference;
+
+                    // Verifica se lo scambio è vantaggioso
+                    if (client1Improves || client2Improves) {
+
+                        // Effettua lo scambio
+                        nodo1.getClientsQueue().remove(client1);
+                        nodo2.getClientsQueue().remove(client2);
+
+                        nodo1.getClientsQueue().add(client2);
+                        nodo2.getClientsQueue().add(client1);
+
+                        client1.setAssignedNodo(nodo2);
+                        client2.setAssignedNodo(nodo1);
+
+                        System.out.println("Swap eseguito tra Client " + client1.getId() + " e Client " + client2.getId() +
+                                " (Client1 migliora: " + client1Improves + ", Client2 migliora: " + client2Improves + ")");
+                    }
+                }
+            }
+        }
+    }
+
 }
