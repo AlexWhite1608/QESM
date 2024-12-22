@@ -1,9 +1,6 @@
 package simulation;
 
-import core.Client;
-import core.NodoFog;
-import core.GaleShapleyMatching;
-import core.Task;
+import core.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +41,15 @@ public class Simulation {
         // Esegue il matching
         GaleShapleyMatching.match(clients, nodi);
 
+        // Arrivo/uscita di clienti
+        if (currentTimeSlot > 1) {
+            if (random.nextDouble() < 0.5) {    //TODO: generalizza tramite parametro la probabilità
+                handleNewClient(currentTimeSlot);
+            } else {
+                handleClientExit(currentTimeSlot);
+            }
+        }
+
         // Salva il matching corrente
         Map<Client, NodoFog> currentMatching = new HashMap<>();
         for (Client client : clients) {
@@ -57,6 +63,8 @@ public class Simulation {
         for (NodoFog nodo : nodi) {
             nodo.processTasks(timeSlotDuration);
         }
+
+        //FIXME: e se arrivo/uscita del client fosse dopo processing dei task?
 
         // Calcola il massimo queueTime tra tutti i client per questo time slot
         Map<Client, Integer> maxQueueInfo = getMaxQueueInfo();
@@ -84,6 +92,40 @@ public class Simulation {
         SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
         SimulationPlot.plotComputationAndDelay(computationCapacityPerSlot, delayPerSlot);
     }
+
+    // Generazione del nuovo client e assegnazione a un nodo casuale
+    private void handleNewClient(int currentTimeSlot) {
+        int meanTaskSize = random.nextInt(Globals.CLIENT_TASK_SIZE_MEAN_MAX - Globals.CLIENT_TASK_SIZE_MEAN_MIN + 1) + Globals.CLIENT_TASK_SIZE_MEAN_MIN;
+        Client newClient = new Client(currentTimeSlot, null, meanTaskSize);
+        clients.add(newClient);
+
+        // Accoppiamento greedy
+        Random randomGenerator = new Random();
+        int indexNodo = randomGenerator.nextInt(nodi.size());
+        NodoFog selectedNodo = nodi.get(indexNodo);
+
+        if (selectedNodo != null) {
+            selectedNodo.getClientsQueue().add(newClient);
+            newClient.setAssignedNodo(selectedNodo);
+            System.out.println("Nuovo client aggiunto: " + newClient.getId() + " -> NodoFog ID: " + selectedNodo.getId());
+        }
+    }
+
+    // Rimozione di un client casuale
+    private void handleClientExit(int departureTime) {
+        if (!clients.isEmpty()) {
+            Client exitingClient = clients.remove(random.nextInt(clients.size()));
+            exitingClient.setDepartureTime(departureTime);
+            NodoFog assignedNodo = exitingClient.getAssignedNodo();
+            if (assignedNodo != null) {
+                assignedNodo.getClientsQueue().remove(exitingClient);
+                assignedNodo.getTaskQueue().removeAll(exitingClient.getTaskList());
+            }
+            assert assignedNodo != null;
+            System.out.println("Client uscente: " + exitingClient.getId() + " dal NodoFog: " + assignedNodo.getId());
+        }
+    }
+
 
     private void printSystemState(int timeSlot) {
         System.out.printf("=== Stato al time slot %d (durata %d) ===", timeSlot, timeSlotDuration);

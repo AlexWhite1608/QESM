@@ -23,7 +23,7 @@ public class ClientFactory {
         List<Client> clients = new ArrayList<>();
         for (int i = 0; i < numClients; i++) {
             int meanTaskSize = random.nextInt(maxTaskSizeMean - minTaskSizeMean + 1) + minTaskSizeMean;
-            clients.add(new Client(0, meanTaskSize)); // Tutti i client iniziali arrivano al tempo 0
+            clients.add(new Client(0, null, meanTaskSize)); // Tutti i client iniziali arrivano al tempo 0
         }
         return clients;
     }

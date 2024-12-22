@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/ClientFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/ClientFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +55,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="core.Globals" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
@@ -79,7 +84,7 @@
       <workItem from="1734773570420" duration="4873000" />
       <workItem from="1734791892955" duration="9798000" />
       <workItem from="1734804993959" duration="763000" />
-      <workItem from="1734879093822" duration="901000" />
+      <workItem from="1734879093822" duration="3548000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />

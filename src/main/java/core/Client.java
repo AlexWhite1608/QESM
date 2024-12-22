@@ -16,10 +16,10 @@ public class Client {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public Client(int arrivalTime, int meanTaskSize) {
+    public Client(int arrivalTime, Integer departureTime, int meanTaskSize) {
         this.id = idGenerator.getAndIncrement();
         this.arrivalTime = arrivalTime;
-        this.departureTime = null;
+        this.departureTime = departureTime;
         this.meanTaskSize = meanTaskSize;
         this.queueTime = 0;
         Random random = new Random();
@@ -122,6 +122,10 @@ public class Client {
 
     public void setAssignedNodo(NodoFog nodo) {
         this.assignedNodo = nodo;
+    }
+
+    public void setDepartureTime(Integer departureTime) {
+        this.departureTime = departureTime;
     }
 
     public int getX() {
