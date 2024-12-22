@@ -2,10 +2,12 @@ package simulation;
 
 import core.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Simulation {
     private List<Client> clients;
@@ -16,6 +18,9 @@ public class Simulation {
     private Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
     private Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
     private Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
+
+    private Client departedClient = null;
+    private Client arrivedClient = null;
 
     public Simulation(List<Client> clients, List<NodoFog> nodi, int timeSlotDuration) {
         this.clients = clients;
@@ -87,6 +92,7 @@ public class Simulation {
             int currentTimeSlot = i + 1;
             simulateTimeSlot(currentTimeSlot);
             printSystemState(currentTimeSlot);
+            printSystemStateJSON(currentTimeSlot);
         }
 
         SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
@@ -98,6 +104,7 @@ public class Simulation {
         int meanTaskSize = random.nextInt(Globals.CLIENT_TASK_SIZE_MEAN_MAX - Globals.CLIENT_TASK_SIZE_MEAN_MIN + 1) + Globals.CLIENT_TASK_SIZE_MEAN_MIN;
         Client newClient = new Client(currentTimeSlot, null, meanTaskSize);
         clients.add(newClient);
+        arrivedClient = newClient;
 
         // Accoppiamento greedy
         Random randomGenerator = new Random();
@@ -107,7 +114,7 @@ public class Simulation {
         if (selectedNodo != null) {
             selectedNodo.getClientsQueue().add(newClient);
             newClient.setAssignedNodo(selectedNodo);
-            System.out.println("Nuovo client aggiunto: " + newClient.getId() + " -> NodoFog ID: " + selectedNodo.getId());
+            //System.out.println("Nuovo client aggiunto: " + newClient.getId() + " -> NodoFog ID: " + selectedNodo.getId());
         }
     }
 
@@ -117,18 +124,81 @@ public class Simulation {
             Client exitingClient = clients.remove(random.nextInt(clients.size()));
             exitingClient.setDepartureTime(departureTime);
             NodoFog assignedNodo = exitingClient.getAssignedNodo();
+            departedClient = exitingClient;
             if (assignedNodo != null) {
                 assignedNodo.getClientsQueue().remove(exitingClient);
                 assignedNodo.getTaskQueue().removeAll(exitingClient.getTaskList());
             }
-            assert assignedNodo != null;
-            System.out.println("Client uscente: " + exitingClient.getId() + " dal NodoFog: " + assignedNodo.getId());
+            //assert assignedNodo != null;
+            //System.out.println("Client uscente: " + exitingClient.getId() + " dal NodoFog: " + assignedNodo.getId());
         }
     }
 
+    private void printSystemStateJSON(int timeSlot) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Map<String, Object> log = new HashMap<>();
+        log.put("timeSlot", timeSlot);
+        log.put("timeSlotDuration", timeSlotDuration);
+
+        // Clienti e Nodi generati
+        log.put("totalClients", clients.size());
+        log.put("totalNodiFog", nodi.size());
+
+        // Matching
+        Map<String, String> matchingLog = new HashMap<>();
+        Map<Client, NodoFog> currentMatching = timeSlotMatchings.get(timeSlot);
+        if (currentMatching != null) {
+            for (Map.Entry<Client, NodoFog> entry : currentMatching.entrySet()) {
+                matchingLog.put("Client " + entry.getKey().getId(), "NodoFog " + entry.getValue().getId());
+            }
+        }
+        log.put("matching", matchingLog.isEmpty() ? "Nessun matching trovato" : matchingLog);
+
+        // Clienti arrivati / partiti
+        Map<String, String> clientChanges = new HashMap<>();
+        if (arrivedClient != null) {
+            clientChanges.put("arrivedClient", "Client " + arrivedClient.getId() + " -> NodoFog " + arrivedClient.getAssignedNodo().getId());
+        }
+        if (departedClient != null) {
+            clientChanges.put("departedClient", "Client " + departedClient.getId() + " uscito");
+        }
+        log.put("clientChanges", clientChanges.isEmpty() ? "Nessun cliente arrivato o partito" : clientChanges);
+
+        // Stato dei Client
+        List<Map<String, Object>> clientStates = new ArrayList<>();
+        for (Client client : clients) {
+            Map<String, Object> clientLog = new HashMap<>();
+            clientLog.put("id", client.getId());
+            clientLog.put("totalRequiredTime", client.getTaskList().stream().mapToInt(Task::getRequiredTime).sum());
+            clientLog.put("queueTime", client.getQueueTime());
+            clientStates.add(clientLog);
+        }
+        log.put("clients", clientStates);
+
+        // Stato dei Nodi
+        List<Map<String, Object>> nodoStates = new ArrayList<>();
+        for (NodoFog nodo : nodi) {
+            Map<String, Object> nodoLog = new HashMap<>();
+            nodoLog.put("id", nodo.getId());
+            nodoLog.put("computationCapability", nodo.getComputationCapability());
+            nodoLog.put("totalExecutionTime", nodo.getTotalExecutionTime());
+            nodoLog.put("totalServices", nodo.getTotalServices());
+            nodoLog.put("totalDelay", nodo.getTotalDelayTime());
+            nodoStates.add(nodoLog);
+        }
+        log.put("nodi", nodoStates);
+
+        // Salvataggio su file
+        try (FileWriter file = new FileWriter("output/timeSlot_" + timeSlot + ".json")) {
+            gson.toJson(log, file);
+        } catch (IOException e) {
+            System.err.println("Errore nel salvataggio del file: " + e.getMessage());
+        }
+    }
 
     private void printSystemState(int timeSlot) {
-        System.out.printf("=== Stato al time slot %d (durata %d) ===", timeSlot, timeSlotDuration);
+        System.out.printf("\n=== Stato al time slot %d (durata %d) ===", timeSlot, timeSlotDuration);
 
         System.out.println("\n--- Clienti/Nodi generati ---");
         System.out.println("Numero di Clienti: " + clients.size());
@@ -146,6 +216,14 @@ public class Simulation {
             System.out.println("Nessun matching trovato.");
         }
 
+        // Clienti arrivati / partiti
+        System.out.println("\n--- Clienti Arrivati/Partiti ---");
+        if (arrivedClient != null) {
+            System.out.println("Client " + arrivedClient.getId() + " assegnato al NodoFog " + arrivedClient.getAssignedNodo().getId());
+        }
+        if (departedClient != null) {
+            System.out.println("Client " + departedClient.getId() + " assegnato al NodoFog " + departedClient.getAssignedNodo().getId() + " uscito");
+        }
 
         // Stato dei Client
         System.out.println("\n--- Stato dei Client ---");
