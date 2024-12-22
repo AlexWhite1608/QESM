@@ -5,28 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_1.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_10.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_11.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_12.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_13.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_14.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_15.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_16.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_17.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_18.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_19.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_2.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_20.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_3.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_4.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_5.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_6.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_10.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_10.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_11.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_11.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_12.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_12.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_13.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_13.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_14.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_14.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_15.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_15.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_16.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_16.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_17.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_17.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_18.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_18.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_19.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_19.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_2.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_20.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_20.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_3.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_3.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_4.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_4.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_5.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_5.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_6.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_6.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +100,7 @@
       <workItem from="1734773570420" duration="4873000" />
       <workItem from="1734791892955" duration="9798000" />
       <workItem from="1734804993959" duration="763000" />
-      <workItem from="1734879093822" duration="5666000" />
+      <workItem from="1734879093822" duration="6064000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />

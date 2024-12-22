@@ -48,12 +48,14 @@ public class Simulation {
 
         // Arrivo/uscita di clienti
         if (currentTimeSlot > 1) {
-            if (random.nextDouble() < 0.5) {    //TODO: generalizza tramite parametro la probabilità
+            if (random.nextDouble() < Globals.ARRIVAL_DEPARTURE_PROBABILITY) {
                 handleNewClient(currentTimeSlot);
             } else {
                 handleClientExit(currentTimeSlot);
             }
         }
+
+        // TODO: controllo stabilità
 
         // Salva il matching corrente
         Map<Client, NodoFog> currentMatching = new HashMap<>();
