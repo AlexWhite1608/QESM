@@ -29,13 +29,25 @@ public class Client {
         this.preferenceList = new HashMap<>();
     }
 
+    //FIXME: da rivedere (vecchia versione)
+//    public void calculatePreferenceList(List<NodoFog> nodi) {
+//        for (NodoFog nodo : nodi) {
+//            int preferenceScore = nodo.getTotalDelayTime() + (int) calculateDistanceTo(nodo) + nodo.getClientsQueue().size();  // tempo di ritardo totale accumulato + tempo di raggiungimento (distance)
+//            preferenceList.put(nodo, preferenceScore);
+//        }
+//    }
+
     // Genera una lista di preferenza dei client verso i nodi
     public void calculatePreferenceList(List<NodoFog> nodi) {
         for (NodoFog nodo : nodi) {
-            int preferenceScore = nodo.getTotalDelayTime() + (int) calculateDistanceTo(nodo);   // tempo di ritardo totale accumulato + tempo di raggiungimento (distance)
+            int loadPenalty = nodo.getClientsQueue().size(); // Penalità per coda lunga
+            int delayPenalty = nodo.getTotalDelayTime(); // Penalità per ritardo accumulato
+            int popularityPenalty = nodo.getTotalServices(); // Penalità per nodi popolari
+            int preferenceScore = delayPenalty + (int) calculateDistanceTo(nodo) + loadPenalty + popularityPenalty;
             preferenceList.put(nodo, preferenceScore);
         }
     }
+
 
     // Restituisce la lista di preferenza ordinata
     public List<NodoFog> getPreferenceList() {

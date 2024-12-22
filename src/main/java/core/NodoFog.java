@@ -32,10 +32,19 @@ public class NodoFog {
         this.preferenceList = new HashMap<>();
     }
 
+    // FIXME: da rivedere (vecchia versione)
+//    public void calculatePreferenceList(List<Client> clients) {
+//        for (Client client : clients) {
+//            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  //FIXME preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
+//            preferenceList.put(client, preferenceScore);
+//        }
+//    }
+
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  //FIXME preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
+            int waitTimeBonus = client.getQueueTime(); // Priorità ai client che hanno aspettato di più
+            int preferenceScore = -waitTimeBonus + (int) calculateDistanceTo(client);
             preferenceList.put(client, preferenceScore);
         }
     }

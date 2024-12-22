@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Main {
     // Configurazione
-    private static final int NUM_NODI = 1;
-    private static final int NUM_CLIENTS = 3;
+    private static final int NUM_NODI = 5;
+    private static final int NUM_CLIENTS = 10;
     private static final int NODO_COMPUTATION_CAPABILITY_MIN = 30; // Capacità computazionale minima dei nodi
     private static final int NODO_COMPUTATION_CAPABILITY_MAX = 70; // Capacità computazionale massima dei nodi
     private static final int CLIENT_TASK_SIZE_MEAN_MIN = 20; // Minimo del valor medio dei task generati
