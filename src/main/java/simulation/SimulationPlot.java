@@ -13,6 +13,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import javax.swing.*;
 import java.awt.*;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Map;
 
 public class SimulationPlot {
@@ -110,4 +111,42 @@ public class SimulationPlot {
 
         frame.setVisible(true);
     }
+
+    // Metodo per plottare il numero di swap per ogni time slot
+    public static void plotStability(List<Integer> swapsPerTimeSlot) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (int i = 0; i < swapsPerTimeSlot.size(); i++) {
+            dataset.addValue(swapsPerTimeSlot.get(i), "Swaps", String.valueOf(i + 1));
+        }
+
+        // Creazione del grafico
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Swap per Time Slot",
+                "Time Slot",
+                "Swap number",
+                dataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                false, true, false
+        );
+
+        CategoryPlot plot = lineChart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer(true, true);
+        renderer.setBaseItemLabelsVisible(true);
+        renderer.setBaseShapesVisible(true);
+        renderer.setDrawOutlines(true);
+        plot.setRenderer(renderer);
+
+        JFrame frame = new JFrame("Stability");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+
+        ChartPanel chartPanel = new ChartPanel(lineChart);
+        frame.add(chartPanel);
+
+        frame.setVisible(true);
+    }
+
 }

@@ -18,6 +18,8 @@ public class Simulation {
     private final Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
     private final Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
     private final Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
+    private final List<Integer> swapsPerTimeSlot;  // Numero di swap per ogni time slot
+    private final List<Map<Client, NodoFog>> historicalMatchings;  // Storico degli accoppiamenti
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -29,6 +31,8 @@ public class Simulation {
         this.timeSlotMatchings = new HashMap<>();
         this.maxQueueTimePerSlot = new HashMap<>();
         this.computationCapacityPerSlot = new HashMap<>();
+        this.swapsPerTimeSlot = new ArrayList<>();
+        this.historicalMatchings = new ArrayList<>();
         this.delayPerSlot = new HashMap<>();
         this.random = new Random();
     }
@@ -68,6 +72,9 @@ public class Simulation {
         }
         timeSlotMatchings.put(currentTimeSlot, currentMatching);
 
+        // Traccia il numero di swap e la stabilità del matching
+        trackStability(currentTimeSlot);
+
         // Processa i task nei nodi
         for (NodoFog nodo : nodi) {
             nodo.processTasks(timeSlotDuration);
@@ -101,6 +108,7 @@ public class Simulation {
 
         SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
         SimulationPlot.plotComputationAndDelay(computationCapacityPerSlot, delayPerSlot);
+        SimulationPlot.plotStability(swapsPerTimeSlot);
     }
 
     // Generazione del nuovo client e assegnazione a un nodo casuale
@@ -135,6 +143,19 @@ public class Simulation {
             }
             //assert assignedNodo != null;
             //System.out.println("Client uscente: " + exitingClient.getId() + " dal NodoFog: " + assignedNodo.getId());
+        }
+    }
+
+    // Traccia il numero di swap e la stabilità del matching
+    private void trackStability(int currentTimeSlot) {
+        // Registra il numero di swap avvenuti in questo time slot
+        int swaps = GaleShapleyMatching.getNumberOfSwaps();
+        swapsPerTimeSlot.add(swaps);
+
+        // Confronta gli accoppiamenti attuali con il time slot precedente
+        Map<Client, NodoFog> currentMatching = timeSlotMatchings.get(currentTimeSlot);
+        if (currentMatching != null) {
+            historicalMatchings.add(currentMatching);
         }
     }
 

@@ -80,6 +80,10 @@ public class GaleShapleyMatching {
 
     // Verifica se conviene fare scambi per migliorare la stabilità del matching
     public static void checkAndPerformSwaps(List<Client> clients, List<NodoFog> nodi) {
+
+        // Resetta il numero di swap per il time slot corrente
+        numberOfSwaps = 0;
+
         for (Client client1 : clients) {
             for (Client client2 : clients) {
                 if (client1 != client2 && client1.getAssignedNodo() != null && client2.getAssignedNodo() != null) {
