@@ -10,7 +10,7 @@ public class NodoFog {
     private int totalExecutionTime; // Tempo totale di esecuzione accumulato eseguendo i vari task
     private int totalDelayTime; // Tempo totale di ritardo accumulato (quando l'esecuzione dei task ha sforato il time slot
     private int totalServices; // Numero di servizi effettuati
-    //private int maxQueueSize; // Dimensione massima della coda
+    private int maxQueueSize; // Dimensione massima della coda
     int x, y;
     private Map<Client, Integer> preferenceList; // Client -> Punteggio di preferenza
     private Queue<Task> taskQueue; // Coda dei task
@@ -18,10 +18,10 @@ public class NodoFog {
 
     private static final AtomicInteger idGenerator = new AtomicInteger(1);  // Generatore ID
 
-    public NodoFog(int computationCapability) {
+    public NodoFog(int computationCapability, int maxQueueSize) {
         this.id = idGenerator.getAndIncrement();
         this.computationCapability = computationCapability;
-        //this.maxQueueSize = maxQueueSize;
+        this.maxQueueSize = maxQueueSize;
         this.totalExecutionTime = 0;
         this.totalDelayTime = 0;
         Random random = new Random();
@@ -106,9 +106,9 @@ public class NodoFog {
     }
 
 
-//    public boolean isQueueFull() {
-//        return clientsQueue.size() >= maxQueueSize;
-//    }
+    public boolean isQueueFull() {
+        return clientsQueue.size() >= maxQueueSize;
+    }
 
     public int getId() {
         return id;
@@ -144,6 +144,10 @@ public class NodoFog {
 
     public Queue<Client> getClientsQueue() {
         return clientsQueue;
+    }
+
+    public int getMaxQueueSize() {
+        return maxQueueSize;
     }
 
     @Override

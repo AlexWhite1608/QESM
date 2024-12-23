@@ -10,14 +10,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Simulation {
-    private List<Client> clients;
-    private List<NodoFog> nodi;
-    private Random random;
-    private int timeSlotDuration;
-    private Map<Integer, Map<Client, NodoFog>> timeSlotMatchings;   // Tiene traccia dei matching in ogni time slot
-    private Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
-    private Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
-    private Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
+    private final List<Client> clients;
+    private final List<NodoFog> nodi;
+    private final Random random;
+    private final int timeSlotDuration;
+    private final Map<Integer, Map<Client, NodoFog>> timeSlotMatchings;   // Tiene traccia dei matching in ogni time slot
+    private final Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
+    private final Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
+    private final Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -51,7 +51,7 @@ public class Simulation {
             if (random.nextDouble() < Globals.ARRIVAL_DEPARTURE_PROBABILITY) {
                 handleNewClient(currentTimeSlot);
             } else {
-                if(!clients.isEmpty())
+                if (!clients.isEmpty())
                     handleClientExit(currentTimeSlot);
             }
         }
@@ -144,6 +144,7 @@ public class Simulation {
         Map<String, Object> log = new HashMap<>();
         log.put("timeSlot", timeSlot);
         log.put("timeSlotDuration", timeSlotDuration);
+        log.put("totalSwaps:", GaleShapleyMatching.getNumberOfSwaps());
 
         // Clienti e Nodi generati
         log.put("totalClients", clients.size());
@@ -174,6 +175,7 @@ public class Simulation {
         for (Client client : clients) {
             Map<String, Object> clientLog = new HashMap<>();
             clientLog.put("id", client.getId());
+            clientLog.put("arrivalTime", client.getArrivalTime());
             clientLog.put("totalRequiredTime", client.getTaskList().stream().mapToInt(Task::getRequiredTime).sum());
             clientLog.put("queueTime", client.getQueueTime());
             clientStates.add(clientLog);
@@ -186,6 +188,7 @@ public class Simulation {
             Map<String, Object> nodoLog = new HashMap<>();
             nodoLog.put("id", nodo.getId());
             nodoLog.put("computationCapability", nodo.getComputationCapability());
+            nodoLog.put("maxCapacity", nodo.getMaxQueueSize());
             nodoLog.put("totalExecutionTime", nodo.getTotalExecutionTime());
             nodoLog.put("totalServices", nodo.getTotalServices());
             nodoLog.put("totalDelay", nodo.getTotalDelayTime());
@@ -210,11 +213,12 @@ public class Simulation {
 
         // Matching
         System.out.println("\n--- Matching ---");
+        System.out.println("Swap avvenuti: " + GaleShapleyMatching.getNumberOfSwaps());
         Map<Client, NodoFog> currentMatching = timeSlotMatchings.get(timeSlot);
         if (currentMatching != null && !currentMatching.isEmpty()) {
             for (Map.Entry<Client, NodoFog> entry : currentMatching.entrySet()) {
-                System.out.println("Client ID: " + entry.getKey().getId() +
-                        " -> NodoFog ID: " + entry.getValue().getId());
+                System.out.println("Client " + entry.getKey().getId() +
+                        " -> NodoFog " + entry.getValue().getId());
             }
         } else {
             System.out.println("Nessun matching trovato.");
@@ -232,7 +236,8 @@ public class Simulation {
         // Stato dei Client
         System.out.println("\n--- Stato dei Client ---");
         for (Client client : clients) {
-            System.out.println("Client ID: " + client.getId() +
+            System.out.println("Client " + client.getId()
+                    + " (a: " + client.getArrivalTime() + ")" +
                     ", Tempo Totale richiesto: " + client.getTaskList().stream().mapToInt(Task::getRequiredTime).sum() +
                     ", Tempo totale in attesa: " + client.getQueueTime());
         }
@@ -241,7 +246,8 @@ public class Simulation {
         System.out.println("\n--- Stato dei Nodi Fog ---");
         for (NodoFog nodo : nodi) {
             System.out.println("NodoFog ID: " + nodo.getId() +
-                    ", Capacità di Calcolo: " + nodo.getComputationCapability() +
+                    ", Potenza di Calcolo: " + nodo.getComputationCapability() +
+                    ", Capacità: " + nodo.getMaxQueueSize() +
                     ", Tempo Totale di Esecuzione: " + nodo.getTotalExecutionTime() +
                     ", Numero totale servizi: " + nodo.getTotalServices() +
                     ", Ritardo accumulato: " + nodo.getTotalDelayTime());

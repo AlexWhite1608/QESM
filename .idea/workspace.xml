@@ -26,8 +26,13 @@
       <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/NodoFog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/NodoFogFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/NodoFogFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +106,8 @@
       <workItem from="1734773570420" duration="4873000" />
       <workItem from="1734791892955" duration="9798000" />
       <workItem from="1734804993959" duration="763000" />
-      <workItem from="1734879093822" duration="7286000" />
+      <workItem from="1734879093822" duration="7825000" />
+      <workItem from="1734945012262" duration="2583000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -145,7 +151,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java</url>
-          <line>80</line>
+          <line>85</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

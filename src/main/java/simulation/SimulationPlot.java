@@ -73,12 +73,12 @@ public class SimulationPlot {
                 int delay = delayEntry.getValue();
                 int computation = computationMap.getOrDefault(nodo, 0);
 
-                dataset.addValue(delay, "NodoFog ID: " + nodo.getId() + " (Cap: " + computation + ")", String.valueOf(timeSlot));
+                dataset.addValue(delay, "NodoFog " + nodo.getId() + " (Pot: " + computation + ", " + "Cap: " + nodo.getMaxQueueSize() + ")", String.valueOf(timeSlot));
             }
         }
 
         JFreeChart lineChart = ChartFactory.createLineChart(
-                "NodoFog Computation/Delay",
+                "NodoFog Delay",
                 "Time Slot",
                 "Delay",
                 dataset,

@@ -3,6 +3,9 @@ package core;
 import java.util.*;
 
 public class GaleShapleyMatching {
+
+    private static int numberOfSwaps = 0;
+
     /**
      * Implementa l'algoritmo di Gale-Shapley per trovare un matching stabile tra client e nodi fog.
      * L'algoritmo calcola internamente le preference list di ciascun client e nodo.
@@ -37,7 +40,7 @@ public class GaleShapleyMatching {
             List<NodoFog> clientPrefList = client.getPreferenceList();
 
             for (NodoFog nodo : clientPrefList) {
-//                if (nodo.isQueueFull()) continue; // Salta se il nodo è pieno
+                if (nodo.isQueueFull()) continue; //FIXME: Salta se il nodo è pieno
 
                 // Salta se il client ha già proposto a questo nodo
                 if (clientProposals.get(client).contains(nodo)) continue;
@@ -67,6 +70,8 @@ public class GaleShapleyMatching {
 
             // Se il client non è riuscito a trovare un nodo, resta non assegnato
             if (!engagedPairs.containsKey(client)) {
+                //TODO: se client non è assegnato ad un nodo, aumenta il suo tempo di attesa!!
+                client.incrementQueueTime(Globals.TIME_SLOT_DURATION);
                 System.out.println("Client " + client.getId() + " non assegnato in questo time slot.");
             }
         }
@@ -109,12 +114,14 @@ public class GaleShapleyMatching {
                         client1.setAssignedNodo(nodo2);
                         client2.setAssignedNodo(nodo1);
 
-                        System.out.println("Swap eseguito tra Client " + client1.getId() + " e Client " + client2.getId() +
-                                " (Client1 migliora: " + client1Improves + ", Client2 migliora: " + client2Improves + ")");
+                        numberOfSwaps++;
                     }
                 }
             }
         }
     }
 
+    public static int getNumberOfSwaps() {
+        return numberOfSwaps;
+    }
 }
