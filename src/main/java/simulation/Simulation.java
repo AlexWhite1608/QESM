@@ -20,6 +20,7 @@ public class Simulation {
     private final Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
     private final List<Integer> swapsPerTimeSlot;  // Numero di swap per ogni time slot
     private final List<Map<Client, NodoFog>> historicalMatchings;  // Storico degli accoppiamenti
+    private final List<Double> stabilityPercentages;  // Percentuali di stabilità per ogni time slot
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -33,6 +34,7 @@ public class Simulation {
         this.computationCapacityPerSlot = new HashMap<>();
         this.swapsPerTimeSlot = new ArrayList<>();
         this.historicalMatchings = new ArrayList<>();
+        this.stabilityPercentages = new ArrayList<>();
         this.delayPerSlot = new HashMap<>();
         this.random = new Random();
     }
@@ -51,12 +53,16 @@ public class Simulation {
         GaleShapleyMatching.match(clients, nodi);
 
         // Arrivo/uscita di clienti
-        if (currentTimeSlot > 1) {
-            if (random.nextDouble() < Globals.ARRIVAL_DEPARTURE_PROBABILITY) {
+        if (currentTimeSlot > 1 && Globals.ALLOW_CLIENT_ARRIVAL_DEPARTURE) {
+
+            // Gestione arrivi
+            if (random.nextDouble() < Globals.ARRIVAL_PROBABILITY) {
                 handleNewClient(currentTimeSlot);
-            } else {
-                if (!clients.isEmpty())
-                    handleClientExit(currentTimeSlot);
+            }
+
+            // Gestione partenze
+            if (random.nextDouble() < Globals.DEPARTURE_PROBABILITY) {
+                handleClientExit(currentTimeSlot);
             }
         }
 
@@ -79,8 +85,6 @@ public class Simulation {
         for (NodoFog nodo : nodi) {
             nodo.processTasks(timeSlotDuration);
         }
-
-        //FIXME: e se arrivo/uscita del client fosse dopo processing dei task?
 
         // Calcola il massimo queueTime tra tutti i client per questo time slot
         Map<Client, Integer> maxQueueInfo = getMaxQueueInfo();
@@ -109,6 +113,8 @@ public class Simulation {
         SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
         SimulationPlot.plotComputationAndDelay(computationCapacityPerSlot, delayPerSlot);
         SimulationPlot.plotStability(swapsPerTimeSlot);
+        SimulationPlot.plotNodeStatistics(nodi);
+        //SimulationPlot.plotStabilityPercentage(stabilityPercentages);
     }
 
     // Generazione del nuovo client e assegnazione a un nodo casuale
@@ -118,7 +124,7 @@ public class Simulation {
         clients.add(newClient);
         arrivedClient = newClient;
 
-        // Accoppiamento greedy
+        // Accoppiamento casuale con un nodo
         Random randomGenerator = new Random();
         int indexNodo = randomGenerator.nextInt(nodi.size());
         NodoFog selectedNodo = nodi.get(indexNodo);
@@ -157,7 +163,39 @@ public class Simulation {
         if (currentMatching != null) {
             historicalMatchings.add(currentMatching);
         }
+
+        //FIXME: Calcola la percentuale di stabilità (cambiamenti negli accoppiamenti) rispetto al time slot precedente
+        if (currentTimeSlot > 1) {
+            Map<Client, NodoFog> previousMatching = timeSlotMatchings.get(currentTimeSlot - 1);
+
+            int stablePairs = 0;
+            int totalComparableClients = 0;
+
+            for (Map.Entry<Client, NodoFog> entry : currentMatching.entrySet()) {
+                Client client = entry.getKey();
+                NodoFog currentNodo = entry.getValue();
+
+                // Escludi i nuovi client che non erano presenti nel matching precedente
+                if (!previousMatching.containsKey(client)) {
+                    continue;
+                }
+
+                // Confronta solo i client che esistono sia nel matching attuale che in quello precedente
+                totalComparableClients++;
+                if (previousMatching.get(client) == currentNodo) {
+                    stablePairs++;
+                }
+            }
+
+            // Calcola la percentuale solo sui client comparabili (escludendo nuovi e rimossi)
+            double stabilityPercentage = totalComparableClients > 0
+                    ? (double) stablePairs / totalComparableClients * 100
+                    : 100.0; // Se non ci sono client comparabili, consideriamo il matching completamente stabile
+
+            stabilityPercentages.add(stabilityPercentage);
+        }
     }
+
 
     private void printSystemStateJSON(int timeSlot) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -5,6 +5,8 @@ import java.util.*;
 public class GaleShapleyMatching {
 
     private static int numberOfSwaps = 0;
+    private static final Set<Map<Client, NodoFog>> visitedMatchings = new HashSet<>(); // Stati già visitati
+
 
     /**
      * Implementa l'algoritmo di Gale-Shapley per trovare un matching stabile tra client e nodi fog.
@@ -83,6 +85,14 @@ public class GaleShapleyMatching {
 
         // Resetta il numero di swap per il time slot corrente
         numberOfSwaps = 0;
+        Map<Client, NodoFog> currentMatching = getCurrentMatching(clients);
+
+        // Controlla se lo stato corrente è già stato visitato
+        if (visitedMatchings.contains(currentMatching)) {
+            return; // Evita ulteriori swap
+        }
+
+        visitedMatchings.add(currentMatching);
 
         for (Client client1 : clients) {
             for (Client client2 : clients) {
@@ -105,10 +115,14 @@ public class GaleShapleyMatching {
                     boolean client1Improves = client1NewPreference < client1CurrentPreference;
                     boolean client2Improves = client2NewPreference < client2CurrentPreference;
 
-                    // Verifica se lo scambio è vantaggioso
-                    if (client1Improves || client2Improves) {
+                    // Condizioni per il peggioramento
+                    boolean client1Worsens = client1NewPreference > client1CurrentPreference;
+                    boolean client2Worsens = client2NewPreference > client2CurrentPreference;
 
-                        // Effettua lo scambio
+                    // Verifica se lo scambio è vantaggioso: almeno uno migliora e nessuno peggiora
+                    if ((client1Improves || client2Improves) && !client1Worsens && !client2Worsens) {
+
+                        // Effettua lo swap
                         nodo1.getClientsQueue().remove(client1);
                         nodo2.getClientsQueue().remove(client2);
 
@@ -123,6 +137,18 @@ public class GaleShapleyMatching {
                 }
             }
         }
+    }
+
+
+    // Metodo per ottenere lo stato corrente del matching
+    private static Map<Client, NodoFog> getCurrentMatching(List<Client> clients) {
+        Map<Client, NodoFog> matching = new HashMap<>();
+        for (Client client : clients) {
+            if (client.getAssignedNodo() != null) {
+                matching.put(client, client.getAssignedNodo());
+            }
+        }
+        return matching;
     }
 
     public static int getNumberOfSwaps() {
