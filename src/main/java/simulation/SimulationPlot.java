@@ -5,7 +5,6 @@ import core.NodoFog;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -13,14 +12,13 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
 public class SimulationPlot {
 
     // Metodo per plottare il tempo di attesa massimo dei client per ogni time slot
-    public static void plotMaxQueueTime(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot) {
+    public static ChartPanel createMaxQueueTimeChart(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot) {
         // Creazione del dataset
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -48,21 +46,13 @@ public class SimulationPlot {
         // Personalizzazione del grafico
         CategoryPlot plot = lineChart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
-        //lineChart.getLegend().setPosition(RectangleEdge.BOTTOM);
 
-        JFrame frame = new JFrame("Simulation Plot");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-
-        ChartPanel chartPanel = new ChartPanel(lineChart);
-        frame.add(chartPanel);
-
-        frame.setVisible(true);
+        return new ChartPanel(lineChart);
     }
 
     // Metodo per plottare capacità computazionale e ritardo accumulato per ogni nodo
-    public static void plotComputationAndDelay(Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
-                                               Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
+    public static ChartPanel createComputationDelayChart(Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
+                                                       Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (Map.Entry<Integer, Map<NodoFog, Integer>> entry : delayPerSlot.entrySet()) {
@@ -103,18 +93,12 @@ public class SimulationPlot {
         renderer.setBaseShapesVisible(true);
         renderer.setDrawOutlines(true);
 
-        JFrame frame = new JFrame("NodoFog Computation and Delay Plot");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        return new ChartPanel(lineChart);
 
-        ChartPanel chartPanel = new ChartPanel(lineChart);
-        frame.add(chartPanel);
-
-        frame.setVisible(true);
     }
 
     // Metodo per plottare il numero di swap per ogni time slot
-    public static void plotStability(List<Integer> swapsPerTimeSlot) {
+    public static ChartPanel createStabilityChart(List<Integer> swapsPerTimeSlot) {
         // Dataset per gli swap per time slot
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
         // Dataset per il totale cumulativo degli swap
@@ -161,19 +145,11 @@ public class SimulationPlot {
         plot.mapDatasetToRangeAxis(1, 0);
         plot.setRenderer(1, lineRenderer);
 
-        // Creazione della finestra per visualizzare il grafico
-        JFrame frame = new JFrame("Stabilità del Sistema");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 600);
-
-        ChartPanel chartPanel = new ChartPanel(combinedChart);
-        frame.add(chartPanel);
-
-        frame.setVisible(true);
+        return new ChartPanel(combinedChart);
     }
 
     // Metodo per plottare le statistiche dei nodi fog
-    public static void plotNodeStatistics(List<NodoFog> nodi) {
+    public static ChartPanel createNodeStatisticsChart(List<NodoFog> nodi) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Aggiunta dei dati al dataset
@@ -207,18 +183,8 @@ public class SimulationPlot {
 
         plot.setRenderer(renderer);
 
-        // Creazione della finestra per il grafico
-        JFrame frame = new JFrame("Statistiche dei Nodi Fog");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        frame.add(chartPanel);
-
-        frame.setVisible(true);
+        return new ChartPanel(barChart);
     }
-
-
 
     //FIXME: Metodo per plottare la stabilità degli accoppiamenti nel tempo
     public static void plotStabilityPercentage(List<Double> stabilityPercentages) {
@@ -249,6 +215,45 @@ public class SimulationPlot {
 
         frame.setVisible(true);
     }
+
+    public static void plotAll(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot,
+                               List<Integer> swapsPerTimeSlot,
+                               List<NodoFog> nodi,
+                               Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
+                               Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
+
+        // Crea il JFrame principale
+        JFrame frame = new JFrame("Grafici");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1600, 900);
+
+        // Creazione dei pannelli di grafico
+        ChartPanel maxQueueTimeChart = createMaxQueueTimeChart(maxQueueTimePerSlot);
+        ChartPanel stabilityChart = createStabilityChart(swapsPerTimeSlot);
+        ChartPanel nodeStatisticsChart = createNodeStatisticsChart(nodi);
+        ChartPanel computationDelayChart = createComputationDelayChart(computationCapacityPerSlot, delayPerSlot);
+
+        // Creazione dei pannelli affiancati
+        JPanel tab1Panel = new JPanel(new GridLayout(1, 2));
+        tab1Panel.add(maxQueueTimeChart);
+        tab1Panel.add(stabilityChart);
+
+        JPanel tab2Panel = new JPanel(new GridLayout(1, 2));
+        tab2Panel.add(nodeStatisticsChart);
+        tab2Panel.add(computationDelayChart);
+
+        // Creazione delle schede (tabs)
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Stabilità", tab1Panel);
+        tabbedPane.addTab("Nodi", tab2Panel);
+
+        // Aggiunta delle schede al frame
+        frame.add(tabbedPane);
+
+        // Visualizzazione
+        frame.setVisible(true);
+    }
+
 
 
 }

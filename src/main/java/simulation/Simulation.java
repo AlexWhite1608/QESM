@@ -110,10 +110,13 @@ public class Simulation {
             printSystemStateJSON(currentTimeSlot);
         }
 
-        SimulationPlot.plotMaxQueueTime(maxQueueTimePerSlot);
-        SimulationPlot.plotComputationAndDelay(computationCapacityPerSlot, delayPerSlot);
-        SimulationPlot.plotStability(swapsPerTimeSlot);
-        SimulationPlot.plotNodeStatistics(nodi);
+        SimulationPlot.plotAll(
+                maxQueueTimePerSlot,
+                swapsPerTimeSlot,
+                nodi,
+                computationCapacityPerSlot,
+                delayPerSlot
+        );
         //SimulationPlot.plotStabilityPercentage(stabilityPercentages);
     }
 

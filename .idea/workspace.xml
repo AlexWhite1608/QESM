@@ -26,8 +26,6 @@
       <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/GaleShapleyMatching.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
     </list>
@@ -105,7 +103,7 @@
       <workItem from="1734804993959" duration="763000" />
       <workItem from="1734879093822" duration="7825000" />
       <workItem from="1734945012262" duration="10115000" />
-      <workItem from="1735031607651" duration="3563000" />
+      <workItem from="1735031607651" duration="4613000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
