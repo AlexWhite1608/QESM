@@ -31,15 +31,15 @@ public class SimulationPlot {
             if (!clientMaxQueue.isEmpty()) {
                 for (Map.Entry<Client, Integer> clientEntry : clientMaxQueue.entrySet()) {
                     int maxQueueTime = clientEntry.getValue();
-                    dataset.addValue(maxQueueTime, "Max QueueTime", String.valueOf(timeSlot));
+                    dataset.addValue(maxQueueTime, "Tempo di attesa massimo", String.valueOf(timeSlot));
                 }
             }
         }
 
         JFreeChart lineChart = ChartFactory.createLineChart(
-                "Max Client QueueTime",
+                "Tempo di attesa massimo per i client",
                 "Time Slot",
-                "QueueTime",
+                "Tempo di attesa",
                 dataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 false, true, false
@@ -67,14 +67,14 @@ public class SimulationPlot {
                 int delay = delayEntry.getValue();
                 int computation = computationMap.getOrDefault(nodo, 0);
 
-                dataset.addValue(delay, "NodoFog " + nodo.getId() + " (Pot: " + computation + ", " + "Cap: " + nodo.getMaxQueueSize() + ")", String.valueOf(timeSlot));
+                dataset.addValue(delay, "Nodo " + nodo.getId() + " (Pot: " + computation + ", " + "Cap: " + nodo.getMaxQueueSize() + ")", String.valueOf(timeSlot));
             }
         }
 
         JFreeChart lineChart = ChartFactory.createLineChart(
-                "NodoFog Delay",
+                "Ritardo accumulato dai nodi",
                 "Time Slot",
-                "Delay",
+                "Ritardo",
                 dataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 true, true, false
@@ -87,10 +87,6 @@ public class SimulationPlot {
 
         LineAndShapeRenderer renderer = new LineAndShapeRenderer(true, true);
         lineChart.getCategoryPlot().setRenderer(renderer);
-//        renderer.setBaseItemLabelGenerator((dataset1, row, column) -> {
-//            String label = dataset1.getRowKey(row).toString();
-//            return label.substring(label.indexOf("Cap: ") + 5, label.length() - 1); // Mostra solo la capacità
-//        });
         renderer.setBaseItemLabelsVisible(true);
         renderer.setBaseShapesVisible(true);
         renderer.setDrawOutlines(true);
@@ -229,16 +225,16 @@ public class SimulationPlot {
         JFreeChart queueTimeChart = ChartFactory.createLineChart(
                 "Tempo di Attesa Medio",
                 "Time Slot",
-                "Tempo (unità)",
+                "Tempo",
                 queueTimeDataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 true, true, false
         );
 
         JFreeChart requiredTimeChart = ChartFactory.createLineChart(
-                "Tempo Richiesto Medio",
+                "Tempo di computazione richiesto Medio",
                 "Time Slot",
-                "Tempo (unità)",
+                "Tempo ",
                 requiredTimeDataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 true, true, false
