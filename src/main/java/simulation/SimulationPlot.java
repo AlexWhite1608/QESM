@@ -151,41 +151,43 @@ public class SimulationPlot {
     }
 
     // Metodo per plottare le statistiche dei nodi fog
-    private static ChartPanel createNodeStatisticsChart(List<NodoFog> nodi) {
+    private static ChartPanel createNodeExecutionChart(Map<Integer, Map<NodoFog, Integer>> executionTimesPerSlot) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Aggiunta dei dati al dataset
-        for (NodoFog nodo : nodi) {
-            dataset.addValue(nodo.getTotalExecutionTime(), "Tempo Totale di Esecuzione", "Nodo " + nodo.getId() + " (Ser: " + nodo.getTotalServices() + ")");
-            dataset.addValue(nodo.getTotalDelayTime(), "Ritardo Accumulato", "Nodo " + nodo.getId() + " (Ser: " + nodo.getTotalServices() + ")");
+        for (Map.Entry<Integer, Map<NodoFog, Integer>> entry : executionTimesPerSlot.entrySet()) {
+            int timeSlot = entry.getKey();
+            Map<NodoFog, Integer> executionTimes = entry.getValue();
+
+            for (Map.Entry<NodoFog, Integer> nodoEntry : executionTimes.entrySet()) {
+                NodoFog nodo = nodoEntry.getKey();
+                int executionTime = nodoEntry.getValue();
+
+                // Ogni nodo ha una propria serie
+                dataset.addValue(executionTime, "Nodo " + nodo.getId(), String.valueOf(timeSlot));
+            }
         }
 
-        // Creazione del grafico a barre
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "NodoFog Esecuzione/Ritardo",
-                "Nodi",
-                "Valori",
+        // Creazione del grafico a linee
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Tempo di Esecuzione per Nodo",
+                "Time Slot",
+                "Tempo di Esecuzione",
                 dataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 true, true, false
         );
 
-        CategoryPlot plot = barChart.getCategoryPlot();
+        // Personalizzazione del grafico
+        CategoryPlot plot = lineChart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
 
-        BarRenderer renderer = new BarRenderer();
-        renderer.setSeriesPaint(0, new Color(155, 187, 89)); // Colore per il tempo totale di esecuzione
-        renderer.setSeriesPaint(1, new Color(192, 80, 77));  // Colore per il ritardo accumulato
-
-        // Rimuovi l'effetto riflesso
-        renderer.setBarPainter(new BarRenderer().getBarPainter());
-        renderer.setShadowVisible(false); // Disabilita le ombre
-        renderer.setItemMargin(0.05); // Riduci la distanza tra le barre (default è 0.2)
-        renderer.setMaximumBarWidth(0.03); // Riduci la larghezza delle barre
-
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+        renderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
+        renderer.setDrawOutlines(true); // Disegna i bordi attorno ai punti
         plot.setRenderer(renderer);
 
-        return new ChartPanel(barChart);
+        return new ChartPanel(lineChart);
     }
 
     // Metodo per plottare i tempi medi di attesa e di esecuzione dei client
@@ -302,7 +304,9 @@ public class SimulationPlot {
                                List<NodoFog> nodi,
                                Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
                                Map<Integer, Map<NodoFog, Integer>> delayPerSlot,
-                               Map<Integer, List<Client>> clientsPerSlot) {
+                               Map<Integer, List<Client>> clientsPerSlot,
+                               Map<Integer, Map<NodoFog, Integer>> executionTimesPerSlot
+                               ) {
 
         // Crea il JFrame principale
         JFrame frame = new JFrame("Grafici");
@@ -312,7 +316,7 @@ public class SimulationPlot {
         // Creazione dei pannelli di grafico
         ChartPanel maxQueueTimeChart = createMaxQueueTimeChart(maxQueueTimePerSlot);
         ChartPanel stabilityChart = createStabilityChart(swapsPerTimeSlot);
-        ChartPanel nodeStatisticsChart = createNodeStatisticsChart(nodi);
+        ChartPanel nodeStatisticsChart = createNodeExecutionChart(executionTimesPerSlot);
         ChartPanel computationDelayChart = createComputationDelayChart(computationCapacityPerSlot, delayPerSlot);
         JPanel clientAveragesPanel = createClientAveragesPanel(clientsPerSlot); // Aggiornato
 

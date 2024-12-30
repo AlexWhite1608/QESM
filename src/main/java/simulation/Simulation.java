@@ -18,6 +18,7 @@ public class Simulation {
     private final Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot;  // mappa per salvare il massimo queueTime ad ogni slot (slot, (client, maxQueueTime))
     private final Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot;  // mappa per salvare la capacità computazionale per ogni nodo in ogni slot
     private final Map<Integer, Map<NodoFog, Integer>> delayPerSlot;  // mappa per salvare il ritardo accumulato per ogni nodo in ogni slot
+    private final Map<Integer, Map<NodoFog, Integer>> executionTimePerSlot;  // mappa per salvare il tempo di esecuzione totale per ogni nodo in ogni slot
     private final List<Integer> swapsPerTimeSlot;  // Numero di swap per ogni time slot
     private final List<Map<Client, NodoFog>> historicalMatchings;  // Storico degli accoppiamenti
     private final List<Double> stabilityPercentages;  // Percentuali di stabilità per ogni time slot
@@ -37,6 +38,7 @@ public class Simulation {
         this.historicalMatchings = new ArrayList<>();
         this.stabilityPercentages = new ArrayList<>();
         this.delayPerSlot = new HashMap<>();
+        this.executionTimePerSlot = new HashMap<>();
         this.random = new Random();
     }
 
@@ -97,12 +99,15 @@ public class Simulation {
         // Salva i dati sulla capacità computazionale e il ritardo accumulato
         Map<NodoFog, Integer> computationCapacityMap = new HashMap<>();
         Map<NodoFog, Integer> delayMap = new HashMap<>();
+        Map<NodoFog, Integer> executionTimeMap = new HashMap<>();
         for (NodoFog nodo : nodi) {
             computationCapacityMap.put(nodo, nodo.getComputationCapability());
             delayMap.put(nodo, nodo.getTotalDelayTime());
+            executionTimeMap.put(nodo, nodo.getTotalExecutionTime());
         }
         computationCapacityPerSlot.put(currentTimeSlot, computationCapacityMap);
         delayPerSlot.put(currentTimeSlot, delayMap);
+        executionTimePerSlot.put(currentTimeSlot, executionTimeMap);
 
     }
 
@@ -120,7 +125,8 @@ public class Simulation {
                 nodi,
                 computationCapacityPerSlot,
                 delayPerSlot,
-                clientsPerSlot
+                clientsPerSlot,
+                executionTimePerSlot
         );
         //SimulationPlot.plotStabilityPercentage(stabilityPercentages);
     }
