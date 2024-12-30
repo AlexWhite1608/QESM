@@ -5,6 +5,7 @@ import core.NodoFog;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -12,13 +13,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SimulationPlot {
 
     // Metodo per plottare il tempo di attesa massimo dei client per ogni time slot
-    public static ChartPanel createMaxQueueTimeChart(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot) {
+    private static ChartPanel createMaxQueueTimeChart(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot) {
         // Creazione del dataset
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -51,7 +53,7 @@ public class SimulationPlot {
     }
 
     // Metodo per plottare capacità computazionale e ritardo accumulato per ogni nodo
-    public static ChartPanel createComputationDelayChart(Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
+    private static ChartPanel createComputationDelayChart(Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
                                                        Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -98,7 +100,7 @@ public class SimulationPlot {
     }
 
     // Metodo per plottare il numero di swap per ogni time slot
-    public static ChartPanel createStabilityChart(List<Integer> swapsPerTimeSlot) {
+    private static ChartPanel createStabilityChart(List<Integer> swapsPerTimeSlot) {
         // Dataset per gli swap per time slot
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
         // Dataset per il totale cumulativo degli swap
@@ -149,7 +151,7 @@ public class SimulationPlot {
     }
 
     // Metodo per plottare le statistiche dei nodi fog
-    public static ChartPanel createNodeStatisticsChart(List<NodoFog> nodi) {
+    private static ChartPanel createNodeStatisticsChart(List<NodoFog> nodi) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Aggiunta dei dati al dataset
@@ -186,6 +188,85 @@ public class SimulationPlot {
         return new ChartPanel(barChart);
     }
 
+    // Metodo per plottare i tempi medi di attesa e di esecuzione dei client
+    private static JPanel createClientAveragesPanel(Map<Integer, List<Client>> clientsPerSlot) {
+        Map<Integer, double[]> averages = new HashMap<>();
+
+        // Calcolo delle medie
+        for (Map.Entry<Integer, List<Client>> entry : clientsPerSlot.entrySet()) {
+            int timeSlot = entry.getKey();
+            List<Client> clients = entry.getValue();
+
+            double totalQueueTime = 0.0;
+            double totalRequiredTime = 0.0;
+
+            for (Client client : clients) {
+                totalQueueTime += client.getQueueTime();
+                totalRequiredTime += client.getTotalTaskExecutionTime();
+            }
+
+            double averageQueueTime = clients.isEmpty() ? 0 : totalQueueTime / clients.size();
+            double averageRequiredTime = clients.isEmpty() ? 0 : totalRequiredTime / clients.size();
+
+            averages.put(timeSlot, new double[]{averageQueueTime, averageRequiredTime});
+        }
+
+        // Creazione dei dataset
+        DefaultCategoryDataset queueTimeDataset = new DefaultCategoryDataset();
+        DefaultCategoryDataset requiredTimeDataset = new DefaultCategoryDataset();
+
+        for (Map.Entry<Integer, double[]> entry : averages.entrySet()) {
+            int timeSlot = entry.getKey();
+            double[] values = entry.getValue();
+
+            queueTimeDataset.addValue(values[0], "Tempo di Attesa Medio", String.valueOf(timeSlot));
+            requiredTimeDataset.addValue(values[1], "Tempo Richiesto Medio", String.valueOf(timeSlot));
+        }
+
+        // Creazione dei grafici
+        JFreeChart queueTimeChart = ChartFactory.createLineChart(
+                "Tempo di Attesa Medio",
+                "Time Slot",
+                "Tempo (unità)",
+                queueTimeDataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                true, true, false
+        );
+
+        JFreeChart requiredTimeChart = ChartFactory.createLineChart(
+                "Tempo Richiesto Medio",
+                "Time Slot",
+                "Tempo (unità)",
+                requiredTimeDataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                true, true, false
+        );
+
+        // Personalizzazione dei grafici
+        customizeChart(queueTimeChart, new Color(192, 80, 77)); // Rosso per il tempo in attesa
+        customizeChart(requiredTimeChart, new Color(155, 187, 89)); // Verde per il tempo richiesto
+
+        // Creazione del pannello con i due grafici
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(new ChartPanel(queueTimeChart));
+        panel.add(new ChartPanel(requiredTimeChart));
+
+        return panel;
+    }
+
+    private static void customizeChart(JFreeChart chart, Color color) {
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+        renderer.setSeriesPaint(0, color); // Colore specifico
+        renderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
+        renderer.setDrawOutlines(true);
+
+        plot.setRenderer(renderer);
+    }
+
+
     //FIXME: Metodo per plottare la stabilità degli accoppiamenti nel tempo
     public static void plotStabilityPercentage(List<Double> stabilityPercentages) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -220,7 +301,8 @@ public class SimulationPlot {
                                List<Integer> swapsPerTimeSlot,
                                List<NodoFog> nodi,
                                Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
-                               Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
+                               Map<Integer, Map<NodoFog, Integer>> delayPerSlot,
+                               Map<Integer, List<Client>> clientsPerSlot) {
 
         // Crea il JFrame principale
         JFrame frame = new JFrame("Grafici");
@@ -232,20 +314,27 @@ public class SimulationPlot {
         ChartPanel stabilityChart = createStabilityChart(swapsPerTimeSlot);
         ChartPanel nodeStatisticsChart = createNodeStatisticsChart(nodi);
         ChartPanel computationDelayChart = createComputationDelayChart(computationCapacityPerSlot, delayPerSlot);
+        JPanel clientAveragesPanel = createClientAveragesPanel(clientsPerSlot); // Aggiornato
 
-        // Creazione dei pannelli affiancati
+        // Panel stabilità
         JPanel tab1Panel = new JPanel(new GridLayout(1, 2));
         tab1Panel.add(maxQueueTimeChart);
         tab1Panel.add(stabilityChart);
 
+        // Panel nodi
         JPanel tab2Panel = new JPanel(new GridLayout(1, 2));
         tab2Panel.add(nodeStatisticsChart);
         tab2Panel.add(computationDelayChart);
+
+        // Panel clienti
+        JPanel tab3Panel = new JPanel(new GridLayout(1, 1));
+        tab3Panel.add(clientAveragesPanel);
 
         // Creazione delle schede (tabs)
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Stabilità", tab1Panel);
         tabbedPane.addTab("Nodi", tab2Panel);
+        tabbedPane.addTab("Client", tab3Panel);
 
         // Aggiunta delle schede al frame
         frame.add(tabbedPane);
@@ -253,6 +342,7 @@ public class SimulationPlot {
         // Visualizzazione
         frame.setVisible(true);
     }
+
 
 
 

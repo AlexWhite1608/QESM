@@ -103,7 +103,11 @@
       <workItem from="1734804993959" duration="763000" />
       <workItem from="1734879093822" duration="7825000" />
       <workItem from="1734945012262" duration="10115000" />
-      <workItem from="1735031607651" duration="4613000" />
+      <workItem from="1735031607651" duration="5419000" />
+      <workItem from="1735048851310" duration="2078000" />
+      <workItem from="1735051175045" duration="426000" />
+      <workItem from="1735482493720" duration="4225000" />
+      <workItem from="1735568960249" duration="2341000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />

@@ -21,6 +21,7 @@ public class Simulation {
     private final List<Integer> swapsPerTimeSlot;  // Numero di swap per ogni time slot
     private final List<Map<Client, NodoFog>> historicalMatchings;  // Storico degli accoppiamenti
     private final List<Double> stabilityPercentages;  // Percentuali di stabilità per ogni time slot
+    private final Map<Integer, List<Client>> clientsPerSlot = new HashMap<>();  // Mappa per salvare i clienti presenti in ogni time slot
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -65,6 +66,9 @@ public class Simulation {
                 handleClientExit(currentTimeSlot);
             }
         }
+
+        // Aggiorna la mappa con i clienti presenti alla fine del time slot
+        clientsPerSlot.put(currentTimeSlot, new ArrayList<>(clients));
 
         // controllo stabilità
         GaleShapleyMatching.checkAndPerformSwaps(clients, nodi);
@@ -115,7 +119,8 @@ public class Simulation {
                 swapsPerTimeSlot,
                 nodi,
                 computationCapacityPerSlot,
-                delayPerSlot
+                delayPerSlot,
+                clientsPerSlot
         );
         //SimulationPlot.plotStabilityPercentage(stabilityPercentages);
     }
