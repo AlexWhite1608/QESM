@@ -1,113 +1,106 @@
 {
   "clientChanges": {
-    "departedClient": "Client 1 uscito",
-    "arrivedClient": "Client 11 -\u003e NodoFog 3"
+    "departedClient": "Client 9 uscito",
+    "arrivedClient": "Client 11 -\u003e NodoFog 2"
   },
   "clients": [
     {
       "arrivalTime": 0,
-      "id": 2,
-      "totalRequiredTime": 534,
-      "queueTime": 7
-    },
-    {
-      "arrivalTime": 0,
-      "id": 4,
-      "totalRequiredTime": 533,
-      "queueTime": 36
+      "id": 1,
+      "totalRequiredTime": 852,
+      "queueTime": 14
     },
     {
       "arrivalTime": 0,
       "id": 5,
-      "totalRequiredTime": 438,
+      "totalRequiredTime": 397,
       "queueTime": 0
     },
     {
       "arrivalTime": 0,
       "id": 6,
-      "totalRequiredTime": 723,
-      "queueTime": 0
+      "totalRequiredTime": 376,
+      "queueTime": 26
     },
     {
       "arrivalTime": 0,
       "id": 7,
-      "totalRequiredTime": 564,
-      "queueTime": 17
+      "totalRequiredTime": 951,
+      "queueTime": 36
     },
     {
       "arrivalTime": 0,
       "id": 8,
-      "totalRequiredTime": 728,
-      "queueTime": 32
+      "totalRequiredTime": 485,
+      "queueTime": 15
     },
     {
       "arrivalTime": 0,
-      "id": 9,
-      "totalRequiredTime": 497,
-      "queueTime": 29
+      "id": 10,
+      "totalRequiredTime": 364,
+      "queueTime": 0
     },
     {
-      "arrivalTime": 7,
+      "arrivalTime": 5,
       "id": 11,
-      "totalRequiredTime": 0,
-      "queueTime": 0
+      "totalRequiredTime": 131,
+      "queueTime": 29
     }
   ],
-  "totalClients": 8,
-  "totalSwaps:": 1,
+  "totalClients": 7,
+  "totalSwaps:": 0,
   "nodi": [
     {
-      "totalExecutionTime": 72,
-      "maxCapacity": 2,
-      "totalServices": 11,
+      "totalExecutionTime": 65,
+      "maxCapacity": 5,
+      "totalServices": 7,
       "id": 1,
-      "computationCapability": 43,
-      "totalDelay": 9
+      "computationCapability": 33,
+      "totalDelay": 19
     },
     {
-      "totalExecutionTime": 74,
-      "maxCapacity": 5,
-      "totalServices": 13,
+      "totalExecutionTime": 86,
+      "maxCapacity": 4,
+      "totalServices": 16,
       "id": 2,
-      "computationCapability": 49,
+      "computationCapability": 59,
+      "totalDelay": 20
+    },
+    {
+      "totalExecutionTime": 44,
+      "maxCapacity": 1,
+      "totalServices": 4,
+      "id": 3,
+      "computationCapability": 36,
       "totalDelay": 14
     },
     {
-      "totalExecutionTime": 72,
-      "maxCapacity": 3,
-      "totalServices": 11,
-      "id": 3,
-      "computationCapability": 58,
-      "totalDelay": 16
-    },
-    {
-      "totalExecutionTime": 56,
-      "maxCapacity": 2,
-      "totalServices": 8,
-      "id": 4,
-      "computationCapability": 58,
-      "totalDelay": 4
-    },
-    {
-      "totalExecutionTime": 100,
-      "maxCapacity": 3,
+      "totalExecutionTime": 63,
+      "maxCapacity": 5,
       "totalServices": 10,
+      "id": 4,
+      "computationCapability": 48,
+      "totalDelay": 10
+    },
+    {
+      "totalExecutionTime": 94,
+      "maxCapacity": 4,
+      "totalServices": 11,
       "id": 5,
-      "computationCapability": 30,
-      "totalDelay": 30
+      "computationCapability": 36,
+      "totalDelay": 24
     }
   ],
   "timeSlot": 7,
   "totalNodiFog": 5,
   "timeSlotDuration": 10,
   "matching": {
-    "Client 4": "NodoFog 5",
-    "Client 2": "NodoFog 1",
-    "Client 11": "NodoFog 3",
-    "Client 9": "NodoFog 2",
+    "Client 1": "NodoFog 3",
+    "Client 11": "NodoFog 2",
+    "Client 10": "NodoFog 1",
     "Client 8": "NodoFog 5",
-    "Client 7": "NodoFog 5",
-    "Client 6": "NodoFog 4",
-    "Client 5": "NodoFog 2"
+    "Client 7": "NodoFog 1",
+    "Client 6": "NodoFog 2",
+    "Client 5": "NodoFog 4"
   }
 }

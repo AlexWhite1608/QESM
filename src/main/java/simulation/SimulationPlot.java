@@ -6,6 +6,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -190,7 +191,7 @@ public class SimulationPlot {
     private static JPanel createClientAveragesPanel(Map<Integer, List<Client>> clientsPerSlot) {
         Map<Integer, double[]> averages = new HashMap<>();
 
-        // Calcolo delle medie
+        // Calcolo delle medie e del numero di client
         for (Map.Entry<Integer, List<Client>> entry : clientsPerSlot.entrySet()) {
             int timeSlot = entry.getKey();
             List<Client> clients = entry.getValue();
@@ -209,16 +210,21 @@ public class SimulationPlot {
             averages.put(timeSlot, new double[]{averageQueueTime, averageRequiredTime});
         }
 
-        // Creazione dei dataset
+        // Creazione dei dataset con etichette personalizzate
         DefaultCategoryDataset queueTimeDataset = new DefaultCategoryDataset();
         DefaultCategoryDataset requiredTimeDataset = new DefaultCategoryDataset();
 
-        for (Map.Entry<Integer, double[]> entry : averages.entrySet()) {
+        for (Map.Entry<Integer, List<Client>> entry : clientsPerSlot.entrySet()) {
             int timeSlot = entry.getKey();
-            double[] values = entry.getValue();
+            List<Client> clients = entry.getValue();
 
-            queueTimeDataset.addValue(values[0], "Tempo di Attesa Medio", String.valueOf(timeSlot));
-            requiredTimeDataset.addValue(values[1], "Tempo Richiesto Medio", String.valueOf(timeSlot));
+            int clientCount = clients.size(); // Ottieni il numero di client
+            String label = timeSlot + " (clients:" + clientCount + ")";
+
+            double[] values = averages.getOrDefault(timeSlot, new double[]{0, 0});
+
+            queueTimeDataset.addValue(values[0], "Tempo di Attesa Medio", label);
+            requiredTimeDataset.addValue(values[1], "Tempo Richiesto Medio", label);
         }
 
         // Creazione dei grafici
@@ -232,12 +238,10 @@ public class SimulationPlot {
         );
 
         JFreeChart requiredTimeChart = ChartFactory.createLineChart(
-                "Tempo di computazione richiesto Medio",
+                "Tempo di Computazione Richiesto Medio",
                 "Time Slot",
-                "Tempo ",
-                requiredTimeDataset,
-                org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                true, true, false
+                "Tempo",
+                requiredTimeDataset
         );
 
         // Personalizzazione dei grafici
@@ -256,13 +260,21 @@ public class SimulationPlot {
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
 
+        // Personalizzazione del renderer
         LineAndShapeRenderer renderer = new LineAndShapeRenderer();
         renderer.setSeriesPaint(0, color); // Colore specifico
         renderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
         renderer.setDrawOutlines(true);
 
         plot.setRenderer(renderer);
+
+        // Personalizzazione delle etichette sull'asse X
+        CategoryAxis axis = plot.getDomainAxis();
+        axis.setTickLabelFont(new Font("Arial", Font.PLAIN, 10));
+        axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
     }
+
+
 
 
     //FIXME: Metodo per plottare la stabilità degli accoppiamenti nel tempo
@@ -307,7 +319,7 @@ public class SimulationPlot {
         // Crea il JFrame principale
         JFrame frame = new JFrame("Grafici");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1600, 900);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         // Creazione dei pannelli di grafico
         ChartPanel maxQueueTimeChart = createMaxQueueTimeChart(maxQueueTimePerSlot);
