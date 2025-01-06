@@ -234,14 +234,16 @@ public class SimulationPlot {
                 "Tempo",
                 queueTimeDataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                true, true, false
+                false, true, false
         );
 
         JFreeChart requiredTimeChart = ChartFactory.createLineChart(
                 "Tempo di Computazione Richiesto Medio",
                 "Time Slot",
                 "Tempo",
-                requiredTimeDataset
+                requiredTimeDataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                false, true, false
         );
 
         // Personalizzazione dei grafici
@@ -273,9 +275,6 @@ public class SimulationPlot {
         axis.setTickLabelFont(new Font("Arial", Font.PLAIN, 10));
         axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
     }
-
-
-
 
     //FIXME: Metodo per plottare la stabilità degli accoppiamenti nel tempo
     public static void plotStabilityPercentage(List<Double> stabilityPercentages) {
@@ -319,7 +318,7 @@ public class SimulationPlot {
         // Crea il JFrame principale
         JFrame frame = new JFrame("Grafici");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setSize(1200, 800);
 
         // Creazione dei pannelli di grafico
         ChartPanel maxQueueTimeChart = createMaxQueueTimeChart(maxQueueTimePerSlot);
@@ -354,8 +353,4 @@ public class SimulationPlot {
         // Visualizzazione
         frame.setVisible(true);
     }
-
-
-
-
 }

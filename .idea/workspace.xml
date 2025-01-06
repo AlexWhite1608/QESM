@@ -26,6 +26,7 @@
       <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +108,11 @@
       <workItem from="1735051175045" duration="426000" />
       <workItem from="1735482493720" duration="4225000" />
       <workItem from="1735568960249" duration="2747000" />
-      <workItem from="1735636350827" duration="1171000" />
+      <workItem from="1735636350827" duration="1411000" />
+      <workItem from="1735644512611" duration="227000" />
+      <workItem from="1735921003410" duration="435000" />
+      <workItem from="1735923501541" duration="643000" />
+      <workItem from="1736181165287" duration="379000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />

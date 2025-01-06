@@ -128,7 +128,6 @@ public class Simulation {
                 clientsPerSlot,
                 executionTimePerSlot
         );
-        //SimulationPlot.plotStabilityPercentage(stabilityPercentages);
     }
 
     // Generazione del nuovo client e assegnazione a un nodo casuale
