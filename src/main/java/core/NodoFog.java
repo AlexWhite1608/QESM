@@ -95,7 +95,7 @@ public class NodoFog {
                 taskQueue.removeAll(clientTasks);
                 totalServices++;
 
-                break; // Il time slot è esaurito, termina l'elaborazione
+                //break; // Il time slot è esaurito, termina l'elaborazione
             }
 
             // Aggiorna il tempo di coda per i client rimanenti nella coda
