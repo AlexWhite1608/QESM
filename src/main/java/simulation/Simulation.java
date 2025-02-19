@@ -8,6 +8,7 @@ import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import utils.PlotManager;
 
 public class Simulation {
     private final List<Client> clients;
@@ -119,7 +120,7 @@ public class Simulation {
             printSystemStateJSON(currentTimeSlot);
         }
 
-        SimulationPlot.plotAll(
+        PlotManager.plotAll(
                 maxQueueTimePerSlot,
                 swapsPerTimeSlot,
                 nodi,

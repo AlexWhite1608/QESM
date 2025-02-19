@@ -1,8 +1,8 @@
 import core.Client;
 import core.Globals;
-import simulation.ClientFactory;
+import utils.ClientFactory;
 import core.NodoFog;
-import simulation.NodoFogFactory;
+import utils.NodoFogFactory;
 import simulation.Simulation;
 
 import java.util.List;

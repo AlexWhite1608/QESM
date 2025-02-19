@@ -66,7 +66,7 @@ public class Client {
         int numGeneratedTasks = (int) Math.max(1, random.nextGaussian() * 2 + meanTaskSize);
 
         // Genero i task e li metto nella lista
-        for (int i = 0; i<numGeneratedTasks; i++) {
+        for (int i = 0; i < numGeneratedTasks; i++) {
             Task task = new Task(this);
             taskList.add(task);
         }

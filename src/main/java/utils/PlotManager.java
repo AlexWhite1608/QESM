@@ -1,4 +1,4 @@
-package simulation;
+package utils;
 
 import core.Client;
 import core.NodoFog;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SimulationPlot {
+public class PlotManager {
 
     // Metodo per plottare il tempo di attesa massimo dei client per ogni time slot
     private static ChartPanel createMaxQueueTimeChart(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot) {
@@ -89,7 +89,6 @@ public class SimulationPlot {
         LineAndShapeRenderer renderer = new LineAndShapeRenderer(true, true);
         lineChart.getCategoryPlot().setRenderer(renderer);
         renderer.setBaseItemLabelsVisible(true);
-        renderer.setBaseShapesVisible(true);
         renderer.setDrawOutlines(true);
 
         return new ChartPanel(lineChart);
@@ -139,7 +138,6 @@ public class SimulationPlot {
         // Aggiungi il dataset per la linea cumulativa
         LineAndShapeRenderer lineRenderer = new LineAndShapeRenderer();
         lineRenderer.setSeriesPaint(0, new Color(192, 80, 77)); // Colore per la linea
-        lineRenderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
         plot.setDataset(1, lineDataset);
         plot.mapDatasetToRangeAxis(1, 0);
         plot.setRenderer(1, lineRenderer);
@@ -180,7 +178,6 @@ public class SimulationPlot {
         plot.setBackgroundPaint(Color.WHITE);
 
         LineAndShapeRenderer renderer = new LineAndShapeRenderer();
-        renderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
         renderer.setDrawOutlines(true); // Disegna i bordi attorno ai punti
         plot.setRenderer(renderer);
 
@@ -265,7 +262,6 @@ public class SimulationPlot {
         // Personalizzazione del renderer
         LineAndShapeRenderer renderer = new LineAndShapeRenderer();
         renderer.setSeriesPaint(0, color); // Colore specifico
-        renderer.setBaseShapesVisible(true); // Mostra i punti sulla linea
         renderer.setDrawOutlines(true);
 
         plot.setRenderer(renderer);

@@ -2,11 +2,10 @@ package simulation;
 
 import core.Client;
 import core.NodoFog;
-import core.Task;
 import org.junit.jupiter.api.Test;
-import simulation.Simulation;
+import utils.ClientFactory;
+import utils.NodoFogFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
