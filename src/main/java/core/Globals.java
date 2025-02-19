@@ -8,8 +8,8 @@ public class Globals {
     public static final int NUM_CLIENTS = 10;
 
     public static final int NODE_CAPACITY_MEAN = 5;   // Media della capacità di un nodo
-    public static final int NODO_COMPUTATION_CAPABILITY_MIN = 20; // Capacità computazionale minima dei nodi
-    public static final int NODO_COMPUTATION_CAPABILITY_MAX = 50; // Capacità computazionale massima dei nodi
+    public static final int NODO_COMPUTATION_CAPABILITY_MIN = 10; // Capacità computazionale minima dei nodi
+    public static final int NODO_COMPUTATION_CAPABILITY_MAX = 30; // Capacità computazionale massima dei nodi
 
     public static final int CLIENT_TASK_SIZE_MEAN_MIN = 20; // Minimo del valor medio dei task generati
     public static final int CLIENT_TASK_SIZE_MEAN_MAX = 50; // Massimo del valor medio dei task generati

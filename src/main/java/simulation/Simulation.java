@@ -24,6 +24,7 @@ public class Simulation {
     private final List<Map<Client, NodoFog>> historicalMatchings;  // Storico degli accoppiamenti
     private final List<Double> stabilityPercentages;  // Percentuali di stabilità per ogni time slot
     private final Map<Integer, List<Client>> clientsPerSlot = new HashMap<>();  // Mappa per salvare i clienti presenti in ogni time slot
+    private final Map<Integer, Double> queueTimePerSlot = new HashMap<>();  // Mappa per salvare il tempo di attesa totale per ogni time slot
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -58,7 +59,6 @@ public class Simulation {
 
         // Arrivo/uscita di clienti
         if (currentTimeSlot > 1 && Globals.ALLOW_CLIENT_ARRIVAL_DEPARTURE) {
-
             // Gestione arrivi
             if (random.nextDouble() < Globals.ARRIVAL_PROBABILITY) {
                 handleNewClient(currentTimeSlot);
@@ -73,7 +73,7 @@ public class Simulation {
         // Aggiorna la mappa con i clienti presenti alla fine del time slot
         clientsPerSlot.put(currentTimeSlot, new ArrayList<>(clients));
 
-        // controllo stabilità
+        // Controllo stabilità
         GaleShapleyMatching.checkAndPerformSwaps(clients, nodi);
 
         // Salva il matching corrente
@@ -93,6 +93,15 @@ public class Simulation {
             nodo.processTasks(timeSlotDuration);
         }
 
+        // **Calcola la somma totale dei tempi di attesa per questo time slot**
+        double totalQueueTime = 0.0;
+        for (Client client : clients) {
+            totalQueueTime += client.getQueueTime(); // Somma tutti i tempi di attesa
+        }
+
+        // **Salva il tempo di attesa totale per il time slot corrente**
+        queueTimePerSlot.put(currentTimeSlot, totalQueueTime);
+
         // Calcola il massimo queueTime tra tutti i client per questo time slot
         Map<Client, Integer> maxQueueInfo = getMaxQueueInfo();
         maxQueueTimePerSlot.put(currentTimeSlot, maxQueueInfo);
@@ -109,8 +118,8 @@ public class Simulation {
         computationCapacityPerSlot.put(currentTimeSlot, computationCapacityMap);
         delayPerSlot.put(currentTimeSlot, delayMap);
         executionTimePerSlot.put(currentTimeSlot, executionTimeMap);
-
     }
+
 
     public void runSimulation(int slots) {
         for (int i = 0; i < slots; i++) {
@@ -127,7 +136,8 @@ public class Simulation {
                 computationCapacityPerSlot,
                 delayPerSlot,
                 clientsPerSlot,
-                executionTimePerSlot
+                executionTimePerSlot,
+                queueTimePerSlot
         );
     }
 

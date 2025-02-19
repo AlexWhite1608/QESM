@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="introdotte coordinate x,y">
+    <list default="true" id="ad171347-bc21-4c4d-b010-c4233829c575" name="Changes" comment="testing">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_10.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_10.json" afterDir="false" />
@@ -26,8 +27,9 @@
       <change beforePath="$PROJECT_DIR$/output/timeSlot_7.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_8.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_8.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/timeSlot_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/timeSlot_9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Globals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationPlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/PlotManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/PlotManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +69,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -113,6 +116,13 @@
       <workItem from="1735921003410" duration="435000" />
       <workItem from="1735923501541" duration="643000" />
       <workItem from="1736181165287" duration="379000" />
+      <workItem from="1738072510984" duration="1494000" />
+      <workItem from="1738431540595" duration="638000" />
+      <workItem from="1738751483717" duration="1463000" />
+      <workItem from="1739288393238" duration="1091000" />
+      <workItem from="1739888779818" duration="5469000" />
+      <workItem from="1739898989949" duration="219000" />
+      <workItem from="1739955471513" duration="12231000" />
     </task>
     <task id="LOCAL-00001" summary="implementazione Nodo+Client e test delle PreferenceList">
       <option name="closed" value="true" />
@@ -138,7 +148,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734628092598</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="testing">
+      <option name="closed" value="true" />
+      <created>1739978961150</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1739978961150</updated>
+    </task>
+    <task id="LOCAL-00005" summary="testing">
+      <option name="closed" value="true" />
+      <created>1739978965352</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1739978965352</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,7 +175,8 @@
     <MESSAGE value="implementazione Nodo+Client e test delle PreferenceList" />
     <MESSAGE value="prima implementazione algoritmo matching + test" />
     <MESSAGE value="introdotte coordinate x,y" />
-    <option name="LAST_COMMIT_MESSAGE" value="introdotte coordinate x,y" />
+    <MESSAGE value="testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -185,72 +185,29 @@ public class PlotManager {
     }
 
     // Metodo per plottare i tempi medi di attesa e di esecuzione dei client
-    private static JPanel createClientAveragesPanel(Map<Integer, List<Client>> clientsPerSlot) {
-        Map<Integer, double[]> averages = new HashMap<>();
+    private static JPanel createClientAveragesPanel(Map<Integer, Double> queueTimePerSlot) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        // Calcolo delle medie e del numero di client
-        for (Map.Entry<Integer, List<Client>> entry : clientsPerSlot.entrySet()) {
+        for (Map.Entry<Integer, Double> entry : queueTimePerSlot.entrySet()) {
             int timeSlot = entry.getKey();
-            List<Client> clients = entry.getValue();
+            double totalQueueTime = entry.getValue();
 
-            double totalQueueTime = 0.0;
-            double totalRequiredTime = 0.0;
-
-            for (Client client : clients) {
-                totalQueueTime += client.getQueueTime();
-                totalRequiredTime += client.getTotalTaskExecutionTime();
-            }
-
-            double averageQueueTime = clients.isEmpty() ? 0 : totalQueueTime / clients.size();
-            double averageRequiredTime = clients.isEmpty() ? 0 : totalRequiredTime / clients.size();
-
-            averages.put(timeSlot, new double[]{averageQueueTime, averageRequiredTime});
+            dataset.addValue(totalQueueTime, "Tempo di Attesa Totale", String.valueOf(timeSlot));
         }
 
-        // Creazione dei dataset con etichette personalizzate
-        DefaultCategoryDataset queueTimeDataset = new DefaultCategoryDataset();
-        DefaultCategoryDataset requiredTimeDataset = new DefaultCategoryDataset();
-
-        for (Map.Entry<Integer, List<Client>> entry : clientsPerSlot.entrySet()) {
-            int timeSlot = entry.getKey();
-            List<Client> clients = entry.getValue();
-
-            int clientCount = clients.size(); // Ottieni il numero di client
-            String label = timeSlot + " (clients:" + clientCount + ")";
-
-            double[] values = averages.getOrDefault(timeSlot, new double[]{0, 0});
-
-            queueTimeDataset.addValue(values[0], "Tempo di Attesa Medio", label);
-            requiredTimeDataset.addValue(values[1], "Tempo Richiesto Medio", label);
-        }
-
-        // Creazione dei grafici
-        JFreeChart queueTimeChart = ChartFactory.createLineChart(
-                "Tempo di Attesa Medio",
+        JFreeChart chart = ChartFactory.createLineChart(
+                "Tempo di Attesa Totale",
                 "Time Slot",
-                "Tempo",
-                queueTimeDataset,
+                "Tempo Totale",
+                dataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 false, true, false
         );
 
-        JFreeChart requiredTimeChart = ChartFactory.createLineChart(
-                "Tempo di Computazione Richiesto Medio",
-                "Time Slot",
-                "Tempo",
-                requiredTimeDataset,
-                org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                false, true, false
-        );
+        customizeChart(chart, new Color(192, 80, 77));
 
-        // Personalizzazione dei grafici
-        customizeChart(queueTimeChart, new Color(192, 80, 77)); // Rosso per il tempo in attesa
-        customizeChart(requiredTimeChart, new Color(155, 187, 89)); // Verde per il tempo richiesto
-
-        // Creazione del pannello con i due grafici
-        JPanel panel = new JPanel(new GridLayout(1, 2));
-        panel.add(new ChartPanel(queueTimeChart));
-        panel.add(new ChartPanel(requiredTimeChart));
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        panel.add(new ChartPanel(chart));
 
         return panel;
     }
@@ -308,7 +265,8 @@ public class PlotManager {
                                Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
                                Map<Integer, Map<NodoFog, Integer>> delayPerSlot,
                                Map<Integer, List<Client>> clientsPerSlot,
-                               Map<Integer, Map<NodoFog, Integer>> executionTimesPerSlot
+                               Map<Integer, Map<NodoFog, Integer>> executionTimesPerSlot,
+                                 Map<Integer, Double> queueTimePerSlot
                                ) {
 
         // Crea il JFrame principale
@@ -321,7 +279,7 @@ public class PlotManager {
         ChartPanel stabilityChart = createStabilityChart(swapsPerTimeSlot);
         ChartPanel nodeStatisticsChart = createNodeExecutionChart(executionTimesPerSlot);
         ChartPanel computationDelayChart = createComputationDelayChart(computationCapacityPerSlot, delayPerSlot);
-        JPanel clientAveragesPanel = createClientAveragesPanel(clientsPerSlot); // Aggiornato
+        JPanel clientAveragesPanel = createClientAveragesPanel(queueTimePerSlot); // Aggiornato
 
         // Panel stabilità
         JPanel tab1Panel = new JPanel(new GridLayout(1, 2));
