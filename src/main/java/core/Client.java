@@ -35,10 +35,6 @@ public class Client {
         for (NodoFog nodo : nodi) {
             int preferenceScore = nodo.getTotalDelayTime() + calculateReachTimeTo(nodo);
             preferenceList.put(nodo, preferenceScore);
-            if (nodo.getTotalDelayTime() > 0 ) {
-                System.out.println("Nodo: " + nodo.getId() + " Delay: " + nodo.getTotalDelayTime());
-                System.out.println("Nodo: " + nodo.getId() + " Distance from Client to Nodo: " + calculateDistanceTo(nodo));
-            }
         }
     }
 
