@@ -2,6 +2,7 @@ package core;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import core.Globals;
 
 public class Client {
     private int id;
@@ -29,22 +30,15 @@ public class Client {
         this.preferenceList = new HashMap<>();
     }
 
-    //FIXME: da rivedere (vecchia versione)
-//    public void calculatePreferenceList(List<NodoFog> nodi) {
-//        for (NodoFog nodo : nodi) {
-//            int preferenceScore = nodo.getTotalDelayTime() + (int) calculateDistanceTo(nodo) + nodo.getClientsQueue().size();  // tempo di ritardo totale accumulato + tempo di raggiungimento (distance)
-//            preferenceList.put(nodo, preferenceScore);
-//        }
-//    }
-
     // Genera una lista di preferenza dei client verso i nodi
     public void calculatePreferenceList(List<NodoFog> nodi) {
         for (NodoFog nodo : nodi) {
-            int loadPenalty = nodo.getClientsQueue().size(); // Penalità per coda lunga
-            int delayPenalty = nodo.getTotalDelayTime(); // Penalità per ritardo accumulato
-            int popularityPenalty = nodo.getTotalServices(); // Penalità per nodi popolari
-            int preferenceScore = delayPenalty + (int) calculateDistanceTo(nodo) + loadPenalty + popularityPenalty;
+            int preferenceScore = nodo.getTotalDelayTime() + calculateReachTimeTo(nodo);
             preferenceList.put(nodo, preferenceScore);
+            if (nodo.getTotalDelayTime() > 0 ) {
+                System.out.println("Nodo: " + nodo.getId() + " Delay: " + nodo.getTotalDelayTime());
+                System.out.println("Nodo: " + nodo.getId() + " Distance from Client to Nodo: " + calculateDistanceTo(nodo));
+            }
         }
     }
 
@@ -72,12 +66,6 @@ public class Client {
         }
     }
 
-    //TODO: elimina, usato solo per i test
-    public void generateTasksForTest(List<Task> predefinedTasks) {
-        this.taskList.clear();
-        this.taskList.addAll(predefinedTasks);
-    }
-
     // Ritorna il tempo totale necessario per completare tutti i task
     public int getTotalTaskExecutionTime() {
         return taskList.stream().mapToInt(Task::getRequiredTime).sum();
@@ -86,6 +74,11 @@ public class Client {
     // Calcola la distanza euclidea con il nodo specificato
     public double calculateDistanceTo(NodoFog node) {
         return Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
+    }
+
+    public int calculateReachTimeTo(NodoFog node) {
+        double distance = calculateDistanceTo(node);
+        return (int) Math.ceil(distance / Globals.TRANSMISSION_SPEED);
     }
 
     public void incrementQueueTime(int increment) {

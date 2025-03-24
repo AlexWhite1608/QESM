@@ -6,6 +6,7 @@ public class Globals {
 
     public static final int NUM_NODI = 5;
     public static final int NUM_CLIENTS = 20;
+    public static final double TRANSMISSION_SPEED = 10.0; // Velocità di trasmissione in unità di spazio per unità di tempo
 
     public static final int NODE_CAPACITY_MEAN = 5;   // Media della capacità di un nodo
     public static final int NODO_COMPUTATION_CAPABILITY_MIN = 50; // Capacità computazionale minima dei nodi

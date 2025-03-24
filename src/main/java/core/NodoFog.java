@@ -2,6 +2,7 @@ package core;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import core.Globals;
 
 
 public class NodoFog {
@@ -32,19 +33,10 @@ public class NodoFog {
         this.preferenceList = new HashMap<>();
     }
 
-    // FIXME: da rivedere (vecchia versione)
-//    public void calculatePreferenceList(List<Client> clients) {
-//        for (Client client : clients) {
-//            int preferenceScore = -client.getQueueTime() + client.getTotalTaskExecutionTime() + (int) calculateDistanceTo(client);  //FIXME preferisco i client che hanno aspettato di più e con il tempo di esecuzione più basso
-//            preferenceList.put(client, preferenceScore);
-//        }
-//    }
-
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int waitTimeBonus = client.getQueueTime(); // Priorità ai client che hanno aspettato di più
-            int preferenceScore = -waitTimeBonus + (int) calculateDistanceTo(client);
+            int preferenceScore = client.getQueueTime() + calculateReachTimeTo(client);
             preferenceList.put(client, preferenceScore);
         }
     }
@@ -63,6 +55,11 @@ public class NodoFog {
     // Calcola la distanza euclidea con il client specificato
     public double calculateDistanceTo(Client client) {
         return Math.sqrt(Math.pow(this.x - client.getX(), 2) + Math.pow(this.y - client.getY(), 2));
+    }
+
+    public int calculateReachTimeTo(Client client) {
+        double distance = calculateDistanceTo(client);
+        return (int) Math.ceil(distance / Globals.TRANSMISSION_SPEED);
     }
 
     // Processa i task nella coda
