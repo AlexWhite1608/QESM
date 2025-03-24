@@ -14,6 +14,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,20 +186,29 @@ public class PlotManager {
     }
 
     // Metodo per plottare i tempi medi di attesa e di esecuzione dei client
-    private static JPanel createClientAveragesPanel(Map<Integer, Double> queueTimePerSlot) {
+    private static JPanel createClientAveragesPanel(Map<Integer, Double> queueTimePerSlot, Map<Integer, List<Client>> clientsPerSlot) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (Map.Entry<Integer, Double> entry : queueTimePerSlot.entrySet()) {
             int timeSlot = entry.getKey();
             double totalQueueTime = entry.getValue();
 
-            dataset.addValue(totalQueueTime, "Tempo di Attesa Totale", String.valueOf(timeSlot));
+            // Ottieni il numero di client attivi in questo time slot
+            int clientCount = clientsPerSlot.getOrDefault(timeSlot, new ArrayList<>()).size();
+
+            // Evita divisioni per zero
+            double averageQueueTime = clientCount > 0 ? totalQueueTime / clientCount : 0;
+
+            // Label con numero di client
+            String label = timeSlot + " (clients: " + clientCount + ")";
+
+            dataset.addValue(averageQueueTime, "Tempo Medio di Attesa", label);
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
-                "Tempo di Attesa Totale",
+                "Tempo Medio di Attesa Totale Client",
                 "Time Slot",
-                "Tempo Totale",
+                "Tempo Medio di Attesa",
                 dataset,
                 org.jfree.chart.plot.PlotOrientation.VERTICAL,
                 false, true, false
@@ -211,6 +221,8 @@ public class PlotManager {
 
         return panel;
     }
+
+
 
     private static void customizeChart(JFreeChart chart, Color color) {
         CategoryPlot plot = chart.getCategoryPlot();
@@ -279,7 +291,7 @@ public class PlotManager {
         ChartPanel stabilityChart = createStabilityChart(swapsPerTimeSlot);
         ChartPanel nodeStatisticsChart = createNodeExecutionChart(executionTimesPerSlot);
         ChartPanel computationDelayChart = createComputationDelayChart(computationCapacityPerSlot, delayPerSlot);
-        JPanel clientAveragesPanel = createClientAveragesPanel(queueTimePerSlot); // Aggiornato
+        JPanel clientAveragesPanel = createClientAveragesPanel(queueTimePerSlot, clientsPerSlot); // Aggiornato
 
         // Panel stabilità
         JPanel tab1Panel = new JPanel(new GridLayout(1, 2));

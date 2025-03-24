@@ -93,7 +93,7 @@ public class Simulation {
             nodo.processTasks(timeSlotDuration);
         }
 
-        // **Calcola la somma totale dei tempi di attesa per questo time slot**
+        // Calcola la somma totale dei tempi di attesa per questo time slot
         double totalQueueTime = 0.0;
         for (Client client : clients) {
             totalQueueTime += client.getQueueTime(); // Somma tutti i tempi di attesa
