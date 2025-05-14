@@ -36,7 +36,7 @@ public class NodoFog {
     // Genera una lista di preferenza dei nodi verso i client
     public void calculatePreferenceList(List<Client> clients) {
         for (Client client : clients) {
-            int preferenceScore = client.getQueueTime() + calculateReachTimeTo(client);
+            int preferenceScore = client.getQueueTime() + calculateReachTimeTo(client) + client.getTotalTaskExecutionTime() ;
             preferenceList.put(client, preferenceScore);
         }
     }
@@ -73,26 +73,24 @@ public class NodoFog {
             // Calcola il tempo totale richiesto per eseguire tutti i task del client
             int clientTotalTime = clientTasks.stream().mapToInt(Task::getRequiredTime).sum();
 
-            // Riduci il tempo richiesto in base alla capacità di calcolo del nodo
+            // Riduce il tempo richiesto in base alla capacità computazionale del nodo
             int adjustedExecutionTime = (int) Math.ceil(clientTotalTime / (double) computationCapability);
 
             if (adjustedExecutionTime <= timeLeft) {
-                // Il task set del client è completato entro il time slot
+                // Il task-set del client è completato entro la durata rimasta del time slot
                 totalExecutionTime += adjustedExecutionTime;
                 timeLeft -= adjustedExecutionTime;
 
                 taskQueue.removeAll(clientTasks);
                 totalServices++;
             } else {
-                // Il task set del client richiede più tempo del time slot
+                // Il task-set del client richiede più tempo della durata rimasta del time slot
                 totalExecutionTime += adjustedExecutionTime;
-                totalDelayTime += adjustedExecutionTime - timeLeft; // Aggiungi il ritardo
+                totalDelayTime += adjustedExecutionTime - timeLeft;
                 timeLeft = 0;
 
                 taskQueue.removeAll(clientTasks);
                 totalServices++;
-
-                //break; // Il time slot è esaurito, termina l'elaborazione
             }
 
             // Aggiorna il tempo di coda per i client rimanenti nella coda

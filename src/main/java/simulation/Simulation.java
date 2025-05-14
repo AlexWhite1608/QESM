@@ -25,6 +25,7 @@ public class Simulation {
     private final List<Double> stabilityPercentages;  // Percentuali di stabilità per ogni time slot
     private final Map<Integer, List<Client>> clientsPerSlot = new HashMap<>();  // Mappa per salvare i clienti presenti in ogni time slot
     private final Map<Integer, Double> queueTimePerSlot = new HashMap<>();  // Mappa per salvare il tempo di attesa totale per ogni time slot
+    private final Map<Integer, Double> avgTaskCompletionTimePerSlot = new HashMap<>();
 
     private Client departedClient = null;
     private Client arrivedClient = null;
@@ -99,6 +100,22 @@ public class Simulation {
             totalQueueTime += client.getQueueTime(); // Somma tutti i tempi di attesa
         }
 
+        // Calcola il tempo medio di completamento dei task per questo time slot
+        double totalTaskCompletionTime = 0.0;
+        int totalTasksProcessed = 0;
+
+        for (NodoFog nodo : nodi) {
+            // Il tempo totale di esecuzione diviso per la capacità di calcolo
+            // dà una stima del tempo di completamento effettivo
+            totalTaskCompletionTime += nodo.getTotalExecutionTime();
+            totalTasksProcessed += nodo.getTotalServices();
+        }
+
+        // Calcola la media e salva per questo time slot
+        double avgTaskCompletionTime = totalTasksProcessed > 0 ?
+                totalTaskCompletionTime / totalTasksProcessed : 0;
+        avgTaskCompletionTimePerSlot.put(currentTimeSlot, avgTaskCompletionTime);
+
         // **Salva il tempo di attesa totale per il time slot corrente**
         queueTimePerSlot.put(currentTimeSlot, totalQueueTime);
 
@@ -125,8 +142,8 @@ public class Simulation {
         for (int i = 0; i < slots; i++) {
             int currentTimeSlot = i + 1;
             simulateTimeSlot(currentTimeSlot);
-            printSystemState(currentTimeSlot);
-            printSystemStateJSON(currentTimeSlot);
+            //printSystemState(currentTimeSlot);
+            //printSystemStateJSON(currentTimeSlot);
         }
 
         PlotManager.plotAll(
@@ -137,7 +154,8 @@ public class Simulation {
                 delayPerSlot,
                 clientsPerSlot,
                 executionTimePerSlot,
-                queueTimePerSlot
+                queueTimePerSlot,
+                avgTaskCompletionTimePerSlot
         );
     }
 

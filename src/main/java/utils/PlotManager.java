@@ -56,7 +56,7 @@ public class PlotManager {
 
     // Metodo per plottare capacità computazionale e ritardo accumulato per ogni nodo
     private static ChartPanel createComputationDelayChart(Map<Integer, Map<NodoFog, Integer>> computationCapacityPerSlot,
-                                                       Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
+                                                          Map<Integer, Map<NodoFog, Integer>> delayPerSlot) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (Map.Entry<Integer, Map<NodoFog, Integer>> entry : delayPerSlot.entrySet()) {
@@ -223,7 +223,6 @@ public class PlotManager {
     }
 
 
-
     private static void customizeChart(JFreeChart chart, Color color) {
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
@@ -271,6 +270,35 @@ public class PlotManager {
         frame.setVisible(true);
     }
 
+    private static ChartPanel createAvgTaskCompletionTimeChart(Map<Integer, Double> avgTaskCompletionTimePerSlot) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (Map.Entry<Integer, Double> entry : avgTaskCompletionTimePerSlot.entrySet()) {
+            int timeSlot = entry.getKey();
+            double avgCompletionTime = entry.getValue();
+            dataset.addValue(avgCompletionTime, "Tempo Medio di Completamento", String.valueOf(timeSlot));
+        }
+
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Tempo Medio di Completamento per Task",
+                "Time Slot",
+                "Tempo Medio (unità)",
+                dataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                false, true, false
+        );
+
+        CategoryPlot plot = lineChart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+        renderer.setSeriesPaint(0, new Color(56, 142, 60)); // Colore verde
+        renderer.setDrawOutlines(true);
+        plot.setRenderer(renderer);
+
+        return new ChartPanel(lineChart);
+    }
+
     public static void plotAll(Map<Integer, Map<Client, Integer>> maxQueueTimePerSlot,
                                List<Integer> swapsPerTimeSlot,
                                List<NodoFog> nodi,
@@ -278,8 +306,9 @@ public class PlotManager {
                                Map<Integer, Map<NodoFog, Integer>> delayPerSlot,
                                Map<Integer, List<Client>> clientsPerSlot,
                                Map<Integer, Map<NodoFog, Integer>> executionTimesPerSlot,
-                                 Map<Integer, Double> queueTimePerSlot
-                               ) {
+                               Map<Integer, Double> queueTimePerSlot,
+                               Map<Integer, Double> avgTaskCompletionTimePerSlot
+    ) {
 
         // Crea il JFrame principale
         JFrame frame = new JFrame("Grafici");
@@ -303,9 +332,9 @@ public class PlotManager {
         tab2Panel.add(nodeStatisticsChart);
         tab2Panel.add(computationDelayChart);
 
-        // Panel clienti
-        JPanel tab3Panel = new JPanel(new GridLayout(1, 1));
+        JPanel tab3Panel = new JPanel(new GridLayout(1, 2));
         tab3Panel.add(clientAveragesPanel);
+        tab3Panel.add(createAvgTaskCompletionTimeChart(avgTaskCompletionTimePerSlot)); // Aggiungi qui
 
         // Creazione delle schede (tabs)
         JTabbedPane tabbedPane = new JTabbedPane();
